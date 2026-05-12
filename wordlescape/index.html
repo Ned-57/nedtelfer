@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wordlescape — Daily OSRS Wordle</title>
+  <meta name="description" content="A daily Wordle game with Old School RuneScape words. New word every day!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0d0c08;
+      --surface:     #1b1810;
+      --surface2:    #241e10;
+      --border:      #5c4e26;
+      --gold:        #c8a951;
+      --gold-dim:    #8b7234;
+      --text:        #f0dfa0;
+      --text-dim:    #9a8860;
+      --correct:     #c8a951;
+      --present:     #b05318;
+      --absent:      #36322a;
+      --absent-text: #605848;
+      --key-bg:      #28220f;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Cinzel', Georgia, serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── Header ── */
+    header {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 2px solid var(--border);
+      background: linear-gradient(180deg, #1a1500 0%, transparent 100%);
+      gap: 8px;
+    }
+
+    .header-info h1 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.1rem, 4vw, 1.6rem);
+      color: var(--gold);
+      letter-spacing: 2px;
+      text-shadow: 0 0 24px rgba(200,169,81,0.35);
+      line-height: 1;
+    }
+
+    #day-info {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 1.5px;
+      margin-top: 3px;
+    }
+
+    .header-btns { display: flex; gap: 6px; }
+
+    .icon-btn {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      padding: 5px 9px;
+      transition: border-color 0.15s, color 0.15s;
+      line-height: 1;
+    }
+    .icon-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── Message ── */
+    #msg-area {
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 4px 0;
+      width: 100%;
+    }
+
+    .msg-pill {
+      background: var(--text);
+      color: var(--bg);
+      padding: 5px 16px;
+      border-radius: 99px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      pointer-events: none;
+      animation: msgFade 2.2s ease forwards;
+    }
+
+    @keyframes msgFade {
+      0%   { opacity: 0; transform: translateY(-6px) scale(0.95); }
+      12%  { opacity: 1; transform: translateY(0) scale(1); }
+      72%  { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    /* ── Board ── */
+    #board-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+      padding: 8px 16px;
+      width: 100%;
+    }
+
+    #board {
+      display: grid;
+      gap: 6px;
+    }
+
+    .tile {
+      border: 2px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--text);
+      text-transform: uppercase;
+      transition: border-color 0.1s;
+      position: relative;
+    }
+
+    .tile[data-filled] { border-color: var(--gold-dim); }
+
+    .tile.pop  { animation: pop 0.1s ease; }
+    .tile.flip { animation: flip 0.18s ease; }
+
+    .tile.correct { background: var(--correct); border-color: var(--correct); color: #0d0c08; }
+    .tile.present { background: var(--present); border-color: var(--present); color: var(--text); }
+    .tile.absent  { background: var(--absent);  border-color: var(--absent);  color: var(--absent-text); }
+
+    @keyframes pop  { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+    @keyframes flip { 0%{transform:rotateX(0deg)} 50%{transform:rotateX(90deg)} 100%{transform:rotateX(0deg)} }
+
+    .row-shake { animation: rowShake 0.4s ease; }
+    @keyframes rowShake {
+      0%,100%{transform:translateX(0)}
+      20%{transform:translateX(-8px)}
+      40%{transform:translateX(8px)}
+      60%{transform:translateX(-6px)}
+      80%{transform:translateX(6px)}
+    }
+
+    /* ── Keyboard ── */
+    #keyboard {
+      width: 100%;
+      max-width: 520px;
+      padding: 6px 8px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .key-row {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .key {
+      flex: 1;
+      max-width: 44px;
+      height: 56px;
+      background: var(--key-bg);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      color: var(--text);
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      position: relative;
+      letter-spacing: 0;
+    }
+    .key.wide { flex: 1.6; max-width: 66px; font-size: 0.65rem; }
+    .key:active { filter: brightness(1.2); }
+
+    .key.correct { background: var(--correct); border-color: var(--correct); color: #0d0c08; }
+    .key.present { background: var(--present); border-color: var(--present); color: var(--text); }
+    .key.absent  { background: var(--absent);  border-color: var(--absent);  color: var(--absent-text); }
+
+    /* ── Modal overlay ── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.78);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 16px;
+      backdrop-filter: blur(2px);
+    }
+    .overlay.hidden { display: none; }
+
+    .modal {
+      background: var(--surface2);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 22px 24px 20px;
+      max-width: 400px;
+      width: 100%;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.05rem;
+      color: var(--gold);
+      text-align: center;
+      margin-bottom: 14px;
+      letter-spacing: 1px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 10px; right: 12px;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 1rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .modal-close:hover { color: var(--text); }
+
+    /* Help tiles */
+    .help-row { display: flex; gap: 4px; margin: 6px 0 2px; }
+    .h-tile {
+      width: 38px; height: 38px;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; font-weight: 700;
+    }
+    .h-tile.correct { background: var(--correct); border-color: var(--correct); color: #0d0c08; }
+    .h-tile.present { background: var(--present); border-color: var(--present); }
+    .h-tile.absent  { background: var(--absent);  border-color: var(--absent); color: var(--absent-text); }
+
+    .help-body { font-size: 0.78rem; color: var(--text-dim); line-height: 1.55; margin: 6px 0; }
+    .help-body strong { color: var(--text); }
+    hr.rune { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+
+    /* End modal */
+    #end-answer {
+      font-size: clamp(1.3rem, 5vw, 1.8rem);
+      font-weight: 700;
+      color: var(--gold);
+      text-align: center;
+      letter-spacing: 4px;
+      margin: 6px 0 4px;
+    }
+    #end-hint {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      text-align: center;
+      font-style: italic;
+      margin-bottom: 10px;
+      line-height: 1.45;
+    }
+    #end-result {
+      font-size: 0.85rem;
+      text-align: center;
+      margin-bottom: 8px;
+      color: var(--text-dim);
+    }
+    #end-grid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      margin: 8px 0;
+    }
+    .end-row { display: flex; gap: 3px; }
+    .end-cell {
+      width: 18px; height: 18px;
+      border-radius: 2px;
+    }
+    .end-cell.correct { background: var(--correct); }
+    .end-cell.present { background: var(--present); }
+    .end-cell.absent  { background: var(--absent); }
+
+    .share-btn {
+      display: block; width: 100%;
+      padding: 11px;
+      background: var(--gold);
+      border: none; border-radius: 5px;
+      color: #0d0c08;
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem; font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 1.5px;
+      margin-top: 10px;
+      transition: background 0.15s;
+    }
+    .share-btn:hover { background: #d4b866; }
+
+    #next-info {
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      text-align: center;
+      margin-top: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Stats modal */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin: 10px 0;
+    }
+    .stat-box { text-align: center; padding: 8px 4px; border: 1px solid var(--border); border-radius: 4px; }
+    .stat-val { font-size: 1.4rem; font-weight: 700; color: var(--gold); }
+    .stat-lbl { font-size: 0.6rem; color: var(--text-dim); margin-top: 2px; letter-spacing: 0.5px; }
+
+    @media (max-height: 680px) {
+      .key { height: 48px; }
+      header { padding: 8px 14px; }
+    }
+    @media (max-width: 380px) {
+      .key { max-width: 36px; height: 50px; }
+      .key.wide { max-width: 56px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-info">
+    <h1>Wordlescape</h1>
+    <p id="day-info">Loading…</p>
+  </div>
+  <div class="header-btns">
+    <button class="icon-btn" id="help-btn" title="How to play">?</button>
+    <button class="icon-btn" id="stats-btn" title="Statistics">⚔</button>
+  </div>
+</header>
+
+<div id="msg-area"></div>
+
+<div id="board-wrap">
+  <div id="board"></div>
+</div>
+
+<div id="keyboard">
+  <div class="key-row" id="row1"></div>
+  <div class="key-row" id="row2"></div>
+  <div class="key-row" id="row3"></div>
+</div>
+
+<!-- Help Modal -->
+<div class="overlay hidden" id="help-ov">
+  <div class="modal">
+    <div class="modal-title">How to Play</div>
+    <button class="modal-close" id="help-x">✕</button>
+
+    <p class="help-body">Guess the <strong>OSRS-related word</strong> of the day. The word length — and number of guesses — changes each day!</p>
+    <p class="help-body">Type letters and press <strong>Enter</strong> to submit. Press <strong>⌫</strong> to delete.</p>
+
+    <hr class="rune">
+
+    <div class="help-row">
+      <div class="h-tile correct">B</div><div class="h-tile">O</div><div class="h-tile">N</div><div class="h-tile">E</div><div class="h-tile">S</div>
+    </div>
+    <p class="help-body"><span style="color:var(--gold)">■ Gold</span> — correct letter, correct position.</p>
+
+    <div class="help-row">
+      <div class="h-tile">B</div><div class="h-tile present">O</div><div class="h-tile">N</div><div class="h-tile">E</div><div class="h-tile">S</div>
+    </div>
+    <p class="help-body"><span style="color:var(--present)">■ Rust</span> — letter is in the word, but wrong position.</p>
+
+    <div class="help-row">
+      <div class="h-tile">B</div><div class="h-tile">O</div><div class="h-tile absent">N</div><div class="h-tile">E</div><div class="h-tile">S</div>
+    </div>
+    <p class="help-body"><span style="color:var(--absent-text)">■ Dark</span> — letter is not in the word.</p>
+
+    <hr class="rune">
+    <p class="help-body">A new word drops every day at midnight. All answers are Old School RuneScape terms — skills, bosses, items, locations, and more. Good luck, adventurer!</p>
+  </div>
+</div>
+
+<!-- End Game Modal -->
+<div class="overlay hidden" id="end-ov">
+  <div class="modal">
+    <div class="modal-title" id="end-title">Quest Complete!</div>
+    <div id="end-answer"></div>
+    <div id="end-hint"></div>
+    <div id="end-result"></div>
+    <div id="end-grid"></div>
+    <button class="share-btn" id="share-btn">Copy Results ⚔</button>
+    <p id="next-info"></p>
+  </div>
+</div>
+
+<!-- Stats Modal -->
+<div class="overlay hidden" id="stats-ov">
+  <div class="modal">
+    <div class="modal-title">Statistics</div>
+    <button class="modal-close" id="stats-x">✕</button>
+    <div class="stats-row" id="stats-boxes"></div>
+  </div>
+</div>
+
+<script>
+// ────────────────────────────────────────────────
+// WORD LIST  [word, hint]
+// Lengths range 5–9 letters for variety
+// ────────────────────────────────────────────────
+const ANSWERS = [
+  // 5-letter
+  ["MAGIC",  "One of the three combat styles — used to cast spells from spellbooks"],
+  ["CHAOS",  "A rune used in mid-level offensive spells like Fire Bolt"],
+  ["BLOOD",  "A high-level rune used in powerful combat spells"],
+  ["DEATH",  "A rune used in mid-to-high level offensive spells"],
+  ["BONES",  "Dropped by most creatures; bury them for Prayer XP"],
+  ["HYDRA",  "An alchemical beast assigned through the Slayer skill in Karuulm"],
+  ["DRAKE",  "A wingless draconic creature in the Karuulm Slayer Dungeon"],
+  ["TROLL",  "A brutish creature found in mountainous regions like Trollheim"],
+  ["GIANT",  "A large creature that drops big bones; found in many dungeons"],
+  ["DEMON",  "An infernal creature, often assigned as a Slayer task"],
+  ["GNOME",  "A small humanoid from the Tree Gnome Stronghold"],
+  ["DWARF",  "A short, stocky character found near mines like Keldagrim"],
+  ["PIETY",  "A powerful Prayer boosting Melee attack, strength, and defence"],
+  ["RUNES",  "Magical stones required to cast spells"],
+  ["SMITE",  "A Prayer that drains your opponent's Prayer points on hit"],
+  ["SKULL",  "The icon marking you as hostile in the Wilderness"],
+  ["EARTH",  "A basic elemental rune used in many spells"],
+  ["WATER",  "A basic elemental rune — also a weakness of Fire Giants"],
+  ["WYRMS",  "Draconic Slayer creatures found in the Karuulm Slayer Dungeon"],
+  ["JELLY",  "A gelatinous Slayer creature found in the Fremennik Slayer Dungeon"],
+  // 6-letter
+  ["ATTACK",  "The melee skill determining how often you hit your target"],
+  ["MINING",  "The skill for extracting ores and gems from rocks"],
+  ["RANGED",  "The combat style using bows, crossbows, and thrown weapons"],
+  ["SLAYER",  "The skill where a master assigns you specific creatures to kill"],
+  ["HUNTER",  "The skill for tracking and catching wildlife across Gielinor"],
+  ["PRAYER",  "The skill granting divine buffs using bones on altars"],
+  ["COMBAT",  "Your overall fighting ability — averaged across combat skills"],
+  ["DRAGON",  "A powerful fire-breathing creature; also a tier of equipment"],
+  ["GOBLIN",  "One of the weakest creatures in the game; found almost everywhere"],
+  ["SHIELD",  "Defensive equipment worn in the off-hand slot"],
+  ["ZULRAH",  "The serpentine boss beneath the island of Mos Le'Harmless"],
+  ["BANDOS",  "The God of War; his armour is BiS for Melee on Slayer tasks"],
+  ["GUTHIX",  "The God of Balance and Nature who brought humans to Gielinor"],
+  ["NATURE",  "A rune used for Alchemy and Superheat Item spells"],
+  ["COSMIC",  "A rune used for enchanting jewellery and other utility spells"],
+  ["RIGOUR",  "A prayer boosting Ranged attack, strength, and defence simultaneously"],
+  ["AUGURY",  "A prayer boosting Magic attack and defence simultaneously"],
+  ["DHAROK",  "A Barrows brother known for his devastating greataxe set effect"],
+  ["TUROTH",  "A Slayer creature requiring Broad bolts or Leaf-bladed weapons"],
+  ["GUTHAN",  "A Barrows brother whose set effect heals you for damage dealt"],
+  ["KURASK",  "A high-level Slayer creature that requires Leaf-bladed weapons to damage"],
+  // 7-letter
+  ["DEFENCE",  "The skill that reduces how often enemies land a hit on you"],
+  ["FISHING",  "The skill for catching fish in rivers, seas, and ponds"],
+  ["COOKING",  "The skill for preparing raw food to restore Hitpoints"],
+  ["FARMING",  "The skill for growing herbs, trees, crops, and bushes"],
+  ["AGILITY",  "The skill extending run energy and unlocking rooftop shortcuts"],
+  ["VORKATH",  "The undead blue dragon boss encountered after Dragon Slayer II"],
+  ["ABYSSAL",  "Relating to the Abyss; as in Abyssal whip or Abyssal demon"],
+  ["BARROWS",  "A challenging minigame where you fight six undead brothers for their armour"],
+  ["VARROCK",  "The largest city in Misthalin; home of the Grand Exchange"],
+  ["FALADOR",  "The white-walled city of Asgarnia; home of the White Knights"],
+  ["CAMELOT",  "The castle of King Arthur; entry point for Seers' Village area"],
+  ["YANILLE",  "A southern Kandarin city housing the Magic Guild and Nightmare Zone"],
+  ["IRONMAN",  "A self-sufficient game mode where trading other players is forbidden"],
+  ["TWISTED",  "As in Twisted Bow — the elite ranged weapon from Chambers of Xeric"],
+  ["TRIDENT",  "A magic weapon that stores runes inside and autocasts one spell"],
+  ["ARMADYL",  "The God of Law; his armour is the best-in-slot for Ranged prayer users"],
+  ["ANCIENT",  "The Zarosian magic spellbook obtained by completing Desert Treasure"],
+  ["PROTECT",  "As in Protect from Melee, Magic, or Ranged — the holy trinity of prayers"],
+  ["GRAAHK",   "A horned creature in the Feldip Hunter area, caught using box traps"],
+  // 8-letter
+  ["STRENGTH",  "The melee skill that determines your maximum possible hit"],
+  ["CRAFTING",  "The skill for making jewellery, leather armour, pottery, and glass"],
+  ["SMITHING",  "The skill for smelting ores and forging metal armour and weapons"],
+  ["HERBLORE",  "The skill for cleaning herbs and brewing potions"],
+  ["THIEVING",  "The skill for pickpocketing NPCs and cracking into chests and stalls"],
+  ["CERBERUS",  "The three-headed hellhound boss guarding the Taverley Dungeon"],
+  ["KALPHITE",  "An insectoid desert creature; their Queen is a popular boss"],
+  ["ARDOUGNE",  "A prosperous Kandarin city famous for its market and thieving opportunities"],
+  ["BLOWPIPE",  "The Toxic Blowpipe — a fast two-handed Ranged weapon from Zulrah's scales"],
+  ["HARDCORE",  "The most extreme Ironman mode — death resets your account permanently"],
+  ["GRACEFUL",  "Lightweight robes earned through Agility that drastically reduce weight"],
+  ["GARGOYLE",  "A stone Slayer creature in the Slayer Tower requiring a rock hammer to finish"],
+  ["KARUULM",   "The volcano region housing dragons, hydras, and drakes for Slayer"],
+  // 9-letter
+  ["FLETCHING",  "The skill for making bows, crossbows, arrows, and bolts"],
+  ["DAGANNOTH",  "A fearsome sea creature; their Rex, Prime, and Supreme kings lurk below Waterbirth"],
+  ["MORYTANIA",  "A dark, swampy kingdom east of Misthalin; home of Barrows and the Theatre"],
+  ["HITPOINTS",  "The skill measuring your character's maximum health pool"],
+  ["SARADOMIN",  "The God of Order and Wisdom — his sword and cape are iconic rewards"],
+  ["RUNECRAFT",   "The skill for crafting elemental and catalytic runes at various altars"],
+];
+
+// ────────────────────────────────────────────────
+// Deterministic daily selection
+// ────────────────────────────────────────────────
+function getDayNumber() {
+  const origin = new Date(2024, 0, 1); // Jan 1 2024 = day 0
+  const now    = new Date();
+  now.setHours(0, 0, 0, 0);
+  return Math.floor((now - origin) / 86400000);
+}
+
+function seededShuffle(arr, seed) {
+  const a = arr.slice();
+  let s = seed | 0;
+  const rand = () => {
+    s = Math.imul(s, 1664525) + 1013904223 | 0;
+    return (s >>> 0) / 4294967296;
+  };
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// Shuffle once with a fixed seed so order is stable across sessions
+const SHUFFLED = seededShuffle(ANSWERS, 77777);
+
+function getTodaysEntry() {
+  return SHUFFLED[getDayNumber() % SHUFFLED.length];
+}
+
+// ────────────────────────────────────────────────
+// Game state
+// ────────────────────────────────────────────────
+const STATE_KEY = 'wls_state';
+const STATS_KEY = 'wls_stats';
+
+let G = {}; // live game object
+
+function initGame() {
+  const dayNum  = getDayNumber();
+  const [word, hint] = getTodaysEntry();
+  const maxG    = Math.max(6, word.length);
+
+  G = {
+    dayNum,
+    word,
+    hint,
+    len: word.length,
+    maxG,
+    guesses:  [],
+    current:  [],
+    over:     false,
+    won:      false,
+  };
+
+  // Try restoring today's state
+  try {
+    const raw = localStorage.getItem(STATE_KEY);
+    if (raw) {
+      const s = JSON.parse(raw);
+      if (s.dayNum === dayNum) {
+        G.guesses = s.guesses || [];
+        G.over    = s.over    || false;
+        G.won     = s.won     || false;
+      }
+    }
+  } catch {}
+}
+
+function persist() {
+  localStorage.setItem(STATE_KEY, JSON.stringify({
+    dayNum:  G.dayNum,
+    guesses: G.guesses,
+    over:    G.over,
+    won:     G.won,
+  }));
+}
+
+// ────────────────────────────────────────────────
+// Stats
+// ────────────────────────────────────────────────
+function loadStats() {
+  try {
+    const s = JSON.parse(localStorage.getItem(STATS_KEY) || '{}');
+    return { played: 0, wins: 0, streak: 0, best: 0, lastWin: -1, ...s };
+  } catch { return { played: 0, wins: 0, streak: 0, best: 0, lastWin: -1 }; }
+}
+
+function recordStats(won) {
+  const s = loadStats();
+  s.played++;
+  if (won) {
+    s.wins++;
+    s.streak = (s.lastWin === G.dayNum - 1) ? s.streak + 1 : 1;
+    s.best   = Math.max(s.best, s.streak);
+    s.lastWin = G.dayNum;
+  } else {
+    s.streak = 0;
+  }
+  localStorage.setItem(STATS_KEY, JSON.stringify(s));
+}
+
+// ────────────────────────────────────────────────
+// Board
+// ────────────────────────────────────────────────
+function buildBoard() {
+  const wrap  = document.getElementById('board-wrap');
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+
+  const gapPx  = 6;
+  const avail  = Math.min(wrap.clientWidth - 32, 480);
+  const maxSz  = 62;
+  const sz     = Math.min(maxSz, Math.floor((avail - gapPx * (G.len - 1)) / G.len));
+  const fs     = sz < 46 ? '0.9rem' : sz < 54 ? '1.1rem' : '1.35rem';
+
+  board.style.gridTemplateColumns = `repeat(${G.len}, ${sz}px)`;
+  board.style.gridTemplateRows    = `repeat(${G.maxG}, ${sz}px)`;
+  board.style.gap = `${gapPx}px`;
+
+  for (let r = 0; r < G.maxG; r++) {
+    for (let c = 0; c < G.len; c++) {
+      const t = document.createElement('div');
+      t.className = 'tile';
+      t.id = `t${r}_${c}`;
+      t.style.cssText = `width:${sz}px;height:${sz}px;font-size:${fs}`;
+      board.appendChild(t);
+    }
+  }
+}
+
+function tile(r, c) { return document.getElementById(`t${r}_${c}`); }
+
+function setTileContent(r, c, letter) {
+  const el = tile(r, c);
+  if (!el) return;
+  el.textContent = letter;
+  if (letter) { el.dataset.filled = '1'; } else { delete el.dataset.filled; }
+}
+
+function revealRow(r, guess, result) {
+  const delay = 200; // ms per tile
+  for (let c = 0; c < G.len; c++) {
+    const el = tile(r, c);
+    if (!el) continue;
+    ;((el, state) => {
+      setTimeout(() => {
+        el.classList.add('flip');
+        setTimeout(() => {
+          el.classList.remove('flip');
+          el.classList.add(state);
+        }, 90);
+      }, c * delay);
+    })(el, result[c]);
+  }
+}
+
+function renderPastGuesses() {
+  G.guesses.forEach((guess, r) => {
+    const result = evaluate(guess, G.word);
+    for (let c = 0; c < G.len; c++) {
+      const el = tile(r, c);
+      if (!el) continue;
+      el.textContent = guess[c];
+      el.dataset.filled = '1';
+      el.classList.add(result[c]);
+    }
+    updateKeys(guess, result);
+  });
+}
+
+function updateCurrentRow() {
+  const r = G.guesses.length;
+  for (let c = 0; c < G.len; c++) {
+    const letter = G.current[c] || '';
+    setTileContent(r, c, letter);
+    if (letter) {
+      const el = tile(r, c);
+      el.classList.remove('pop');
+      void el.offsetWidth; // reflow
+      el.classList.add('pop');
+    }
+  }
+}
+
+function shakeCurrentRow() {
+  const r = G.guesses.length;
+  for (let c = 0; c < G.len; c++) {
+    const el = tile(r, c);
+    if (!el) continue;
+    el.classList.remove('row-shake');
+    void el.offsetWidth;
+    el.classList.add('row-shake');
+    el.addEventListener('animationend', () => el.classList.remove('row-shake'), { once: true });
+  }
+}
+
+// ────────────────────────────────────────────────
+// Keyboard
+// ────────────────────────────────────────────────
+const ROWS = [
+  ['Q','W','E','R','T','Y','U','I','O','P'],
+  ['A','S','D','F','G','H','J','K','L'],
+  ['ENTER','Z','X','C','V','B','N','M','⌫'],
+];
+
+function buildKeyboard() {
+  ROWS.forEach((keys, i) => {
+    const row = document.getElementById(`row${i+1}`);
+    row.innerHTML = '';
+    keys.forEach(k => {
+      const btn = document.createElement('button');
+      btn.className = 'key' + (k.length > 1 ? ' wide' : '');
+      btn.textContent = k;
+      btn.dataset.k = k;
+      btn.addEventListener('click', () => handleKey(k));
+      row.appendChild(btn);
+    });
+  });
+}
+
+const KEY_PRIORITY = { correct: 3, present: 2, absent: 1 };
+
+function updateKeys(guess, result) {
+  [...guess].forEach((letter, i) => {
+    const btn = document.querySelector(`[data-k="${letter}"]`);
+    if (!btn) return;
+    const cur = btn.dataset.state;
+    const nxt = result[i];
+    if ((KEY_PRIORITY[nxt] || 0) > (KEY_PRIORITY[cur] || 0)) {
+      btn.dataset.state = nxt;
+      btn.className = 'key' + (btn.textContent.length > 1 ? ' wide' : '') + ' ' + nxt;
+    }
+  });
+}
+
+// ────────────────────────────────────────────────
+// Guess evaluation (Wordle algorithm)
+// ────────────────────────────────────────────────
+function evaluate(guess, word) {
+  const res  = Array(guess.length).fill('absent');
+  const pool = word.split('');
+  const g    = guess.split('');
+
+  // Pass 1: correct
+  for (let i = 0; i < g.length; i++) {
+    if (g[i] === pool[i]) {
+      res[i]  = 'correct';
+      pool[i] = null;
+      g[i]    = null;
+    }
+  }
+  // Pass 2: present
+  for (let i = 0; i < g.length; i++) {
+    if (!g[i]) continue;
+    const j = pool.indexOf(g[i]);
+    if (j !== -1) {
+      res[i]  = 'present';
+      pool[j] = null;
+    }
+  }
+  return res;
+}
+
+// ────────────────────────────────────────────────
+// Input
+// ────────────────────────────────────────────────
+function handleKey(k) {
+  if (G.over) return;
+
+  if (k === '⌫' || k === 'Backspace') {
+    if (G.current.length > 0) {
+      G.current.pop();
+      updateCurrentRow();
+    }
+    return;
+  }
+
+  if (k === 'ENTER' || k === 'Enter') {
+    submitGuess();
+    return;
+  }
+
+  if (/^[A-Z]$/.test(k) && G.current.length < G.len) {
+    G.current.push(k);
+    updateCurrentRow();
+  }
+}
+
+function submitGuess() {
+  if (G.current.length < G.len) {
+    flash('Not enough letters!');
+    shakeCurrentRow();
+    return;
+  }
+
+  const guess  = G.current.join('');
+  const result = evaluate(guess, G.word);
+  const row    = G.guesses.length;
+
+  G.guesses.push(guess);
+  G.current = [];
+
+  revealRow(row, guess, result);
+
+  const revealMs = G.len * 200 + 200;
+  setTimeout(() => {
+    updateKeys(guess, result);
+
+    if (guess === G.word) {
+      G.over = G.won = true;
+      persist();
+      recordStats(true);
+      setTimeout(() => openEndModal(true), 400);
+    } else if (G.guesses.length >= G.maxG) {
+      G.over = true;
+      G.won  = false;
+      persist();
+      recordStats(false);
+      setTimeout(() => openEndModal(false), 400);
+    } else {
+      persist();
+    }
+  }, revealMs);
+}
+
+// ────────────────────────────────────────────────
+// Flash message
+// ────────────────────────────────────────────────
+function flash(text) {
+  const area = document.getElementById('msg-area');
+  const pill = document.createElement('div');
+  pill.className = 'msg-pill';
+  pill.textContent = text;
+  area.innerHTML = '';
+  area.appendChild(pill);
+  setTimeout(() => pill.remove(), 2200);
+}
+
+// ────────────────────────────────────────────────
+// End modal
+// ────────────────────────────────────────────────
+const WIN_LINES = [
+  'Quest complete!',
+  'Wise Old Man would be proud.',
+  'You are worthy of the Fire Cape!',
+  'Skill mastery achieved!',
+  'A true Gielinor adventurer!',
+  'Max cape energy!',
+];
+
+function openEndModal(won) {
+  document.getElementById('end-title').textContent =
+    won ? WIN_LINES[G.guesses.length % WIN_LINES.length] : 'Unlucky, adventurer.';
+
+  document.getElementById('end-answer').textContent = G.word;
+  document.getElementById('end-hint').textContent   = G.hint;
+
+  document.getElementById('end-result').textContent = won
+    ? `Solved in ${G.guesses.length} / ${G.maxG} guesses`
+    : `The word was above — better luck tomorrow!`;
+
+  // Mini guess grid
+  const grid = document.getElementById('end-grid');
+  grid.innerHTML = '';
+  G.guesses.forEach(guess => {
+    const result = evaluate(guess, G.word);
+    const row = document.createElement('div');
+    row.className = 'end-row';
+    result.forEach(r => {
+      const c = document.createElement('div');
+      c.className = 'end-cell ' + r;
+      row.appendChild(c);
+    });
+    grid.appendChild(row);
+  });
+
+  // Countdown to midnight
+  const tick = () => {
+    const midnight = new Date();
+    midnight.setDate(midnight.getDate() + 1);
+    midnight.setHours(0, 0, 0, 0);
+    const diff = midnight - Date.now();
+    if (diff <= 0) {
+      document.getElementById('next-info').textContent = 'New word is ready — refresh!';
+      return;
+    }
+    const h = String(Math.floor(diff / 3600000)).padStart(2, '0');
+    const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+    const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+    document.getElementById('next-info').textContent = `Next word in ${h}:${m}:${s}`;
+    setTimeout(tick, 1000);
+  };
+  tick();
+
+  document.getElementById('end-ov').classList.remove('hidden');
+}
+
+// ────────────────────────────────────────────────
+// Share
+// ────────────────────────────────────────────────
+function shareResults() {
+  const lines = [
+    `Wordlescape #${G.dayNum + 1} (${G.len} letters)`,
+    G.won ? `${G.guesses.length}/${G.maxG}` : `X/${G.maxG}`,
+    '',
+    ...G.guesses.map(guess =>
+      evaluate(guess, G.word).map(r =>
+        r === 'correct' ? '🟩' : r === 'present' ? '🟧' : '⬛'
+      ).join('')
+    ),
+    '',
+    'nedtelfer.com/wordlescape',
+  ];
+  const text = lines.join('\n');
+
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(text).then(onCopied).catch(fallbackCopy(text));
+  } else {
+    fallbackCopy(text)();
+  }
+
+  function onCopied() {
+    const btn = document.getElementById('share-btn');
+    btn.textContent = 'Copied! ✓';
+    setTimeout(() => { btn.textContent = 'Copy Results ⚔'; }, 2000);
+  }
+  function fallbackCopy(t) {
+    return () => {
+      const ta = document.createElement('textarea');
+      ta.value = t;
+      Object.assign(ta.style, { position: 'fixed', opacity: 0 });
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      document.execCommand('copy');
+      ta.remove();
+      onCopied();
+    };
+  }
+}
+
+// ────────────────────────────────────────────────
+// Stats modal
+// ────────────────────────────────────────────────
+function openStatsModal() {
+  const s   = loadStats();
+  const pct = s.played ? Math.round(100 * s.wins / s.played) : 0;
+  document.getElementById('stats-boxes').innerHTML = `
+    <div class="stat-box"><div class="stat-val">${s.played}</div><div class="stat-lbl">Played</div></div>
+    <div class="stat-box"><div class="stat-val">${pct}%</div><div class="stat-lbl">Win %</div></div>
+    <div class="stat-box"><div class="stat-val">${s.streak}</div><div class="stat-lbl">Streak</div></div>
+    <div class="stat-box"><div class="stat-val">${s.best}</div><div class="stat-lbl">Best</div></div>
+  `;
+  document.getElementById('stats-ov').classList.remove('hidden');
+}
+
+// ────────────────────────────────────────────────
+// Header info
+// ────────────────────────────────────────────────
+function renderHeader() {
+  document.getElementById('day-info').textContent =
+    `#${G.dayNum + 1} · ${G.len} letters · ${G.maxG} guesses`;
+}
+
+// ────────────────────────────────────────────────
+// Bootstrap
+// ────────────────────────────────────────────────
+function boot() {
+  initGame();
+  renderHeader();
+  buildBoard();
+  buildKeyboard();
+  renderPastGuesses();
+
+  // Show end modal if already finished
+  if (G.over) setTimeout(() => openEndModal(G.won), 300);
+
+  // Physical keyboard
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key === 'Backspace') { handleKey('Backspace'); e.preventDefault(); }
+    else if (e.key === 'Enter') { handleKey('Enter'); }
+    else if (/^[a-zA-Z]$/.test(e.key)) { handleKey(e.key.toUpperCase()); }
+  });
+
+  // Modal wiring
+  const helpOv  = document.getElementById('help-ov');
+  const endOv   = document.getElementById('end-ov');
+  const statsOv = document.getElementById('stats-ov');
+
+  document.getElementById('help-btn').addEventListener('click', () => helpOv.classList.remove('hidden'));
+  document.getElementById('help-x').addEventListener('click',   () => helpOv.classList.add('hidden'));
+  helpOv.addEventListener('click', e => { if (e.target === helpOv) helpOv.classList.add('hidden'); });
+
+  document.getElementById('stats-btn').addEventListener('click', openStatsModal);
+  document.getElementById('stats-x').addEventListener('click',   () => statsOv.classList.add('hidden'));
+  statsOv.addEventListener('click', e => { if (e.target === statsOv) statsOv.classList.add('hidden'); });
+
+  endOv.addEventListener('click', e => { if (e.target === endOv) endOv.classList.add('hidden'); });
+
+  document.getElementById('share-btn').addEventListener('click', shareResults);
+}
+
+boot();
+</script>
+</body>
+</html>
