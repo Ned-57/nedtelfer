@@ -70,7 +70,48 @@
       margin-top: 3px;
     }
 
-    .header-btns { display: flex; gap: 6px; }
+    .header-btns,
+    .header-subbtns { display: flex; gap: 6px; }
+
+    .header-subbtns {
+      justify-content: center;
+      padding: 12px 16px 12px;
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto 8px;
+    }
+
+    .header-subbtns .icon-btn {
+      min-width: 180px;
+      flex: 1;
+      max-width: 260px;
+      font-size: 0.95rem;
+      padding: 10px 16px;
+    }
+
+    .category-hint-img {
+      width: 100%;
+      max-width: 420px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      object-fit: contain;
+      background: var(--surface);
+    }
+
+    .category-hint-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .category-hint-title {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
 
     .icon-btn {
       background: var(--surface2);
@@ -83,6 +124,36 @@
       padding: 5px 9px;
       transition: border-color 0.15s, color 0.15s;
       line-height: 1;
+    }
+
+    .categories-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin: 16px 0 0;
+    }
+
+    .category-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(200, 169, 81, 0.08);
+      color: var(--text);
+      padding: 8px 14px;
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .categories-note {
+      margin-top: 16px;
+      color: var(--text-dim);
+      text-align: center;
+      font-size: 0.85rem;
+      line-height: 1.5;
     }
     .icon-btn:hover { border-color: var(--gold); color: var(--gold); }
 
@@ -366,6 +437,11 @@
   </div>
 </header>
 
+<div class="header-subbtns">
+  <button class="icon-btn" id="category-btn" title="Show today's category hint">Category Hint</button>
+  <button class="icon-btn" id="categories-btn" title="Show all possible categories">All Possible Categories</button>
+</div>
+
 <div id="msg-area"></div>
 
 <div id="board-wrap">
@@ -406,6 +482,24 @@
 
     <hr class="rune">
     <p class="help-body">A new word drops every day at midnight. All answers are Old School RuneScape terms — skills, bosses, items, locations, and more. Good luck, adventurer!</p>
+  </div>
+</div>
+
+<!-- Category Hint Modal -->
+<div class="overlay hidden" id="category-ov">
+  <div class="modal">
+    <button class="modal-close" id="category-x">✕</button>
+    <img id="category-img" class="category-hint-img" src="" alt="Category hint image">
+  </div>
+</div>
+
+<!-- Categories Modal -->
+<div class="overlay hidden" id="categories-ov">
+  <div class="modal">
+    <div class="modal-title">Available Categories</div>
+    <button class="modal-close" id="categories-x">✕</button>
+    <div id="categories-list" class="categories-list"></div>
+    <p class="help-body categories-note">More are coming — feel free to reach out to ya boi ned for any requests.</p>
   </div>
 </div>
 
@@ -590,11 +684,73 @@ const WORD_GROUPS = [
   F2P_QUESTS,
 ];
 
+const WORD_GROUP_NAMES = [
+  'Skills',
+  'Runes',
+  'F2P Cities',
+  'P2P Cities',
+  'F2P Monsters',
+  'P2P Monsters',
+  'Slayer Masters',
+  'F2P Quests',
+];
+
+const CATEGORY_HINT_IMAGES = {
+  'Skills': 'icons/skill.png',
+  'Runes': 'icons/pureEss.png',
+  'F2P Cities': 'icons/f2pLocations.png',
+  'P2P Cities': 'icons/p2pLocations.jpeg',
+  'F2P Monsters': 'icons/f2pMonsters.png',
+  'P2P Monsters': 'icons/p2pMonsters.png',
+  'Slayer Masters': 'icons/neiveSlayer.jpg',
+  'F2P Quests': 'icons/freeQuests.png',
+};
+
+function createCategoryHintSvg(title) {
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="720" height="400">
+      <rect width="100%" height="100%" fill="#1b1810" />
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+            font-family="Cinzel, serif" font-size="42" fill="#c8a951">${title}</text>
+    </svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function getCategoryHintImageUrl() {
+  const name = getTodaysCategoryName();
+  return CATEGORY_HINT_IMAGES[name] || createCategoryHintSvg(name);
+}
 
 // Randomly choose a word group
 
 function chooseRandomList() {
   return WORD_GROUPS[Math.floor(Math.random() * WORD_GROUPS.length)];
+}
+
+function getCategoryIndex() {
+  return getDayNumber() % WORD_GROUPS.length;
+}
+
+function getTodaysCategoryName() {
+  return WORD_GROUP_NAMES[getCategoryIndex()];
+}
+
+function showTodaysCategory() {
+  const name = getTodaysCategoryName();
+  const img = document.getElementById('category-img');
+  const ov = document.getElementById('category-ov');
+
+  img.src = getCategoryHintImageUrl();
+  img.alt = `${name} hint`;
+  ov.classList.remove('hidden');
+}
+
+function showAllCategories() {
+  const list = document.getElementById('categories-list');
+  list.innerHTML = WORD_GROUP_NAMES
+    .map(name => `<span class="category-chip">${name}</span>`)
+    .join('');
+  document.getElementById('categories-ov').classList.remove('hidden');
 }
 
 //Math.floor function round down to nearest whole number
@@ -608,7 +764,7 @@ function chooseRandomList() {
 // Deterministic daily selection - determines what #day we are on
 // ────────────────────────────────────────────────
 function getDayNumber() {
-  const origin = new Date(2026, 5, 14); // May 14 2026 = day 0 (release date)
+  const origin = new Date(2026, 4, 14); // May 14 2026 = day 0 (release date)
   const now    = new Date(); // date of user
   now.setHours(0, 0, 0, 0); // set user date to midnight
   return Math.floor((now - origin) / 86400000); //take users date and take away release date
@@ -632,7 +788,10 @@ function seededShuffle(arr, seed) {
 
 
 // Shuffle once with a fixed seed so order is stable across sessions
-const SHUFFLED = seededShuffle(chooseRandomList(), 77777);
+const SHUFFLED = seededShuffle(
+  WORD_GROUPS[getDayNumber() % WORD_GROUPS.length],
+  77777
+);
 
 function getTodaysEntry() {
   return SHUFFLED[getDayNumber() % SHUFFLED.length];
@@ -1097,10 +1256,20 @@ function boot() {
   const helpOv  = document.getElementById('help-ov');
   const endOv   = document.getElementById('end-ov');
   const statsOv = document.getElementById('stats-ov');
+  const categoryOv = document.getElementById('category-ov');
+  const categoriesOv = document.getElementById('categories-ov');
 
   document.getElementById('help-btn').addEventListener('click', () => helpOv.classList.remove('hidden'));
   document.getElementById('help-x').addEventListener('click',   () => helpOv.classList.add('hidden'));
   helpOv.addEventListener('click', e => { if (e.target === helpOv) helpOv.classList.add('hidden'); });
+
+  document.getElementById('category-btn').addEventListener('click', showTodaysCategory);
+  document.getElementById('categories-btn').addEventListener('click', showAllCategories);
+  document.getElementById('category-x').addEventListener('click', () => categoryOv.classList.add('hidden'));
+  categoryOv.addEventListener('click', e => { if (e.target === categoryOv) categoryOv.classList.add('hidden'); });
+
+  document.getElementById('categories-x').addEventListener('click', () => categoriesOv.classList.add('hidden'));
+  categoriesOv.addEventListener('click', e => { if (e.target === categoriesOv) categoriesOv.classList.add('hidden'); });
 
   document.getElementById('stats-btn').addEventListener('click', openStatsModal);
   document.getElementById('stats-x').addEventListener('click',   () => statsOv.classList.add('hidden'));
