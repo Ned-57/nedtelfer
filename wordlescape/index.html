@@ -89,6 +89,10 @@
       padding: 10px 16px;
     }
 
+    .hidden {
+      display: none !important;
+    }
+
     .category-hint-img {
       width: 100%;
       max-width: 420px;
@@ -438,8 +442,8 @@
 </header>
 
 <div class="header-subbtns">
-  <button class="icon-btn" id="category-btn" title="Show today's category hint">Category Hint</button>
-  <button class="icon-btn" id="categories-btn" title="Show all possible categories">All Possible Categories</button>
+    <button class="icon-btn hidden" id="category-btn" title="Show today's category hint">Category Hint</button>
+    <button class="icon-btn" id="categories-btn" title="Show all possible categories">All Possible Categories</button>
 </div>
 
 <div id="msg-area"></div>
@@ -488,8 +492,8 @@
 <!-- Category Hint Modal -->
 <div class="overlay hidden" id="category-ov">
   <div class="modal">
-    <button class="modal-close" id="category-x">✕</button>
-    <img id="category-img" class="category-hint-img" src="" alt="Category hint image">
+<button class="modal-close hidden" id="category-x">✕</button>
+<img id="category-img" class="category-hint-img" src="" alt="Category hint image">
   </div>
 </div>
 
@@ -753,6 +757,16 @@ function showAllCategories() {
   document.getElementById('categories-ov').classList.remove('hidden');
 }
 
+function updateCategoryButtonVisibility() {
+  const btn = document.getElementById('category-btn');
+  if (!btn) return;
+  if (G.guesses.length >= 3) {
+    btn.classList.remove('hidden');
+  } else {
+    btn.classList.add('hidden');
+  }
+}
+
 //Math.floor function round down to nearest whole number
 //Mathr.random function gens a decimimal between 0 and 0.9 recurring
 //WORD_GROUPS.length gives the number of groups in the list
@@ -808,7 +822,7 @@ let G = {}; // live game object
 function initGame() {
   const dayNum  = getDayNumber();
   const [word, hint] = getTodaysEntry();
-  const maxG    = Math.max(6, word.length);
+  const maxG    = 6;
 
   G = {
     dayNum,
@@ -1068,6 +1082,7 @@ function submitGuess() {
   const row    = G.guesses.length;
 
   G.guesses.push(guess);
+  updateCategoryButtonVisibility();
   G.current = [];
 
   revealRow(row, guess, result);
@@ -1236,6 +1251,7 @@ function renderHeader() {
 // ────────────────────────────────────────────────
 function boot() {
   initGame();
+  updateCategoryButtonVisibility();
   renderHeader();
   buildBoard();
   buildKeyboard();
