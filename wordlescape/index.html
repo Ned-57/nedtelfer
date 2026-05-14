@@ -70,7 +70,48 @@
       margin-top: 3px;
     }
 
-    .header-btns { display: flex; gap: 6px; }
+    .header-btns,
+    .header-subbtns { display: flex; gap: 6px; }
+
+    .header-subbtns {
+      justify-content: center;
+      padding: 12px 16px 12px;
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto 8px;
+    }
+
+    .header-subbtns .icon-btn {
+      min-width: 180px;
+      flex: 1;
+      max-width: 260px;
+      font-size: 0.95rem;
+      padding: 10px 16px;
+    }
+
+    .category-hint-img {
+      width: 100%;
+      max-width: 420px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      object-fit: contain;
+      background: var(--surface);
+    }
+
+    .category-hint-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .category-hint-title {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
 
     .icon-btn {
       background: var(--surface2);
@@ -83,6 +124,36 @@
       padding: 5px 9px;
       transition: border-color 0.15s, color 0.15s;
       line-height: 1;
+    }
+
+    .categories-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin: 16px 0 0;
+    }
+
+    .category-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(200, 169, 81, 0.08);
+      color: var(--text);
+      padding: 8px 14px;
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .categories-note {
+      margin-top: 16px;
+      color: var(--text-dim);
+      text-align: center;
+      font-size: 0.85rem;
+      line-height: 1.5;
     }
     .icon-btn:hover { border-color: var(--gold); color: var(--gold); }
 
@@ -366,6 +437,11 @@
   </div>
 </header>
 
+<div class="header-subbtns">
+  <button class="icon-btn" id="category-btn" title="Show today's category hint">Category Hint</button>
+  <button class="icon-btn" id="categories-btn" title="Show all possible categories">All Possible Categories</button>
+</div>
+
 <div id="msg-area"></div>
 
 <div id="board-wrap">
@@ -409,6 +485,24 @@
   </div>
 </div>
 
+<!-- Category Hint Modal -->
+<div class="overlay hidden" id="category-ov">
+  <div class="modal">
+    <button class="modal-close" id="category-x">✕</button>
+    <img id="category-img" class="category-hint-img" src="" alt="Category hint image">
+  </div>
+</div>
+
+<!-- Categories Modal -->
+<div class="overlay hidden" id="categories-ov">
+  <div class="modal">
+    <div class="modal-title">Available Categories</div>
+    <button class="modal-close" id="categories-x">✕</button>
+    <div id="categories-list" class="categories-list"></div>
+    <p class="help-body categories-note">More are coming — feel free to reach out to ya boi ned for any requests.</p>
+  </div>
+</div>
+
 <!-- End Game Modal -->
 <div class="overlay hidden" id="end-ov">
   <div class="modal">
@@ -436,101 +530,245 @@
 // WORD LIST  [word, hint]
 // Lengths range 5–9 letters for variety
 // ────────────────────────────────────────────────
-const ANSWERS = [
-  // 5-letter
-  ["MAGIC",  "One of the three combat styles — used to cast spells from spellbooks"],
-  ["CHAOS",  "A rune used in mid-level offensive spells like Fire Bolt"],
-  ["BLOOD",  "A high-level rune used in powerful combat spells"],
-  ["DEATH",  "A rune used in mid-to-high level offensive spells"],
-  ["BONES",  "Dropped by most creatures; bury them for Prayer XP"],
-  ["HYDRA",  "An alchemical beast assigned through the Slayer skill in Karuulm"],
-  ["DRAKE",  "A wingless draconic creature in the Karuulm Slayer Dungeon"],
-  ["TROLL",  "A brutish creature found in mountainous regions like Trollheim"],
-  ["GIANT",  "A large creature that drops big bones; found in many dungeons"],
-  ["DEMON",  "An infernal creature, often assigned as a Slayer task"],
-  ["GNOME",  "A small humanoid from the Tree Gnome Stronghold"],
-  ["DWARF",  "A short, stocky character found near mines like Keldagrim"],
-  ["PIETY",  "A powerful Prayer boosting Melee attack, strength, and defence"],
-  ["RUNES",  "Magical stones required to cast spells"],
-  ["SMITE",  "A Prayer that drains your opponent's Prayer points on hit"],
-  ["SKULL",  "The icon marking you as hostile in the Wilderness"],
-  ["EARTH",  "A basic elemental rune used in many spells"],
-  ["WATER",  "A basic elemental rune — also a weakness of Fire Giants"],
-  ["WYRMS",  "Draconic Slayer creatures found in the Karuulm Slayer Dungeon"],
-  ["JELLY",  "A gelatinous Slayer creature found in the Fremennik Slayer Dungeon"],
-  // 6-letter
-  ["ATTACK",  "The melee skill determining how often you hit your target"],
-  ["MINING",  "The skill for extracting ores and gems from rocks"],
-  ["RANGED",  "The combat style using bows, crossbows, and thrown weapons"],
-  ["SLAYER",  "The skill where a master assigns you specific creatures to kill"],
-  ["HUNTER",  "The skill for tracking and catching wildlife across Gielinor"],
-  ["PRAYER",  "The skill granting divine buffs using bones on altars"],
-  ["COMBAT",  "Your overall fighting ability — averaged across combat skills"],
-  ["DRAGON",  "A powerful fire-breathing creature; also a tier of equipment"],
-  ["GOBLIN",  "One of the weakest creatures in the game; found almost everywhere"],
-  ["SHIELD",  "Defensive equipment worn in the off-hand slot"],
-  ["ZULRAH",  "The serpentine boss beneath the island of Mos Le'Harmless"],
-  ["BANDOS",  "The God of War; his armour is BiS for Melee on Slayer tasks"],
-  ["GUTHIX",  "The God of Balance and Nature who brought humans to Gielinor"],
-  ["NATURE",  "A rune used for Alchemy and Superheat Item spells"],
-  ["COSMIC",  "A rune used for enchanting jewellery and other utility spells"],
-  ["RIGOUR",  "A prayer boosting Ranged attack, strength, and defence simultaneously"],
-  ["AUGURY",  "A prayer boosting Magic attack and defence simultaneously"],
-  ["DHAROK",  "A Barrows brother known for his devastating greataxe set effect"],
-  ["TUROTH",  "A Slayer creature requiring Broad bolts or Leaf-bladed weapons"],
-  ["GUTHAN",  "A Barrows brother whose set effect heals you for damage dealt"],
-  ["KURASK",  "A high-level Slayer creature that requires Leaf-bladed weapons to damage"],
-  // 7-letter
-  ["DEFENCE",  "The skill that reduces how often enemies land a hit on you"],
-  ["FISHING",  "The skill for catching fish in rivers, seas, and ponds"],
-  ["COOKING",  "The skill for preparing raw food to restore Hitpoints"],
-  ["FARMING",  "The skill for growing herbs, trees, crops, and bushes"],
-  ["AGILITY",  "The skill extending run energy and unlocking rooftop shortcuts"],
-  ["VORKATH",  "The undead blue dragon boss encountered after Dragon Slayer II"],
-  ["ABYSSAL",  "Relating to the Abyss; as in Abyssal whip or Abyssal demon"],
-  ["BARROWS",  "A challenging minigame where you fight six undead brothers for their armour"],
-  ["VARROCK",  "The largest city in Misthalin; home of the Grand Exchange"],
-  ["FALADOR",  "The white-walled city of Asgarnia; home of the White Knights"],
-  ["CAMELOT",  "The castle of King Arthur; entry point for Seers' Village area"],
-  ["YANILLE",  "A southern Kandarin city housing the Magic Guild and Nightmare Zone"],
-  ["IRONMAN",  "A self-sufficient game mode where trading other players is forbidden"],
-  ["TWISTED",  "As in Twisted Bow — the elite ranged weapon from Chambers of Xeric"],
-  ["TRIDENT",  "A magic weapon that stores runes inside and autocasts one spell"],
-  ["ARMADYL",  "The God of Law; his armour is the best-in-slot for Ranged prayer users"],
-  ["ANCIENT",  "The Zarosian magic spellbook obtained by completing Desert Treasure"],
-  ["PROTECT",  "As in Protect from Melee, Magic, or Ranged — the holy trinity of prayers"],
-  ["GRAAHK",   "A horned creature in the Feldip Hunter area, caught using box traps"],
-  // 8-letter
-  ["STRENGTH",  "The melee skill that determines your maximum possible hit"],
-  ["CRAFTING",  "The skill for making jewellery, leather armour, pottery, and glass"],
-  ["SMITHING",  "The skill for smelting ores and forging metal armour and weapons"],
-  ["HERBLORE",  "The skill for cleaning herbs and brewing potions"],
-  ["THIEVING",  "The skill for pickpocketing NPCs and cracking into chests and stalls"],
-  ["CERBERUS",  "The three-headed hellhound boss guarding the Taverley Dungeon"],
-  ["KALPHITE",  "An insectoid desert creature; their Queen is a popular boss"],
-  ["ARDOUGNE",  "A prosperous Kandarin city famous for its market and thieving opportunities"],
-  ["BLOWPIPE",  "The Toxic Blowpipe — a fast two-handed Ranged weapon from Zulrah's scales"],
-  ["HARDCORE",  "The most extreme Ironman mode — death resets your account permanently"],
-  ["GRACEFUL",  "Lightweight robes earned through Agility that drastically reduce weight"],
-  ["GARGOYLE",  "A stone Slayer creature in the Slayer Tower requiring a rock hammer to finish"],
-  ["KARUULM",   "The volcano region housing dragons, hydras, and drakes for Slayer"],
-  // 9-letter
-  ["FLETCHING",  "The skill for making bows, crossbows, arrows, and bolts"],
-  ["DAGANNOTH",  "A fearsome sea creature; their Rex, Prime, and Supreme kings lurk below Waterbirth"],
-  ["MORYTANIA",  "A dark, swampy kingdom east of Misthalin; home of Barrows and the Theatre"],
-  ["HITPOINTS",  "The skill measuring your character's maximum health pool"],
-  ["SARADOMIN",  "The God of Order and Wisdom — his sword and cape are iconic rewards"],
-  ["RUNECRAFT",   "The skill for crafting elemental and catalytic runes at various altars"],
+const OSRS_SKILLS = [
+  ["AGILITY", "Improves run energy restoration and unlocks shortcuts"],
+  ["ATTACK", "Determines your accuracy with melee weapons"],
+  ["CONSTRUCTION", "Lets you build and customise your Player-Owned House"],
+  ["COOKING", "Used to prepare food for healing and buffs"],
+  ["CRAFTING", "Used to create jewellery, leather armour, and more"],
+  ["DEFENCE", "Reduces damage taken from enemy attacks"],
+  ["FARMING", "Allows you to grow crops, herbs, and trees"],
+  ["FIREMAKING", "Lets you light fires and burn logs"],
+  ["FISHING", "Allows you to catch fish from rivers, lakes, and seas"],
+  ["FLETCHING", "Lets you make bows, arrows, and bolts"],
+  ["HERBLORE", "Allows you to make potions from herbs and ingredients"],
+  ["HITPOINTS", "Determines your total health points"],
+  ["HUNTER", "Allows you to track and catch creatures across Gielinor"],
+  ["MAGIC", "Used to cast spells from spellbooks"],
+  ["MINING", "Used to extract ores and gems from rocks"],
+  ["PRAYER", "Lets you use protective and boosting prayers"],
+  ["RANGED", "Determines accuracy and damage with bows and ranged weapons"],
+  ["RUNECRAFT", "Allows you to craft magical runes at altars"],
+  ["SAILING", "Lets you captain ships and explore the seas of Gielinor"],
+  ["SLAYER", "Unlocks special monsters assigned by Slayer Masters"],
+  ["SMITHING", "Lets you forge metal bars into weapons and armour"],
+  ["STRENGTH", "Increases your maximum melee hit damage"],
+  ["THIEVING", "Lets you pickpocket NPCs and steal from stalls"],
+  ["WOODCUTTING", "Used to chop trees for logs"]
 ];
 
+const RUNES = [
+  ["AIR", "A basic elemental rune used in many spells"],
+  ["ASTRAL", "Used for Lunar spells and high-level magic"],
+  ["BLOOD", "A powerful rune used in high-level combat spells"],
+  ["BODY", "Used in stat-reducing and curse spells"],
+  ["CHAOS", "Used in mid-level offensive combat spells"],
+  ["COSMIC", "Used in jewellery enchanting spells"],
+  ["DEATH", "Used in strong offensive and teleport spells"],
+  ["EARTH", "A basic elemental rune used in many spells"],
+  ["FIRE", "A basic elemental rune used in combat and utility spells"],
+  ["LAW", "Used primarily for teleportation spells"],
+  ["MIND", "Used in basic strike combat spells"],
+  ["MIST", "A combination rune containing Air and Water elements"],
+  ["MUD", "A combination rune containing Earth and Water elements"],
+  ["NATURE", "Used for High Alchemy and item transformation spells"],
+  ["SMOKE", "A combination rune containing Air and Fire elements"],
+  ["SOUL", "Used in powerful utility and combat spells"],
+  ["STEAM", "A combination rune containing Water and Fire elements"],
+  ["WATER", "A basic elemental rune used in many spells"],
+  ["WRATH", "Used in powerful surge and dragonfire spells"]
+];
+
+const F2P_CITIES = [
+  ["AL KHARID", "A desert city south of Lumbridge known for its mine and palace"],
+  ["BARBARIAN VILLAGE", "A small settlement west of Varrock with stronghold access"],
+  ["DRAYNOR VILLAGE", "A quiet village known for willow trees and Master Farmers"],
+  ["EDGEVILLE", "A settlement on the edge of the Wilderness with a furnace and bank"],
+  ["FALADOR", "A white stone city ruled by the White Knights"],
+  ["LUMBRIDGE", "The starting city of Gielinor located beside the River Lum"],
+  ["PORT SARIM", "A harbour town connecting ships across Gielinor"],
+  ["RIMMINGTON", "A small village west of Port Sarim near player house portals"],
+  ["VARROCK", "A major trading city with the Grand Exchange and Varrock Palace"],
+  ["WIZARDS' TOWER", "A magical tower south of Draynor inhabited by wizards"]
+];
+
+const P2P_CITIES = [
+  ["APE ATOLL", "A jungle island inhabited by monkeys and ninja guards"],
+  ["ARCEUUS", "A dark magical district of Great Kourend focused on necromancy"],
+  ["BURGH DE ROTT", "A rundown settlement deep within Morytania"],
+  ["CAMELOT", "A royal city in Kandarin ruled by King Arthur"],
+  ["CANIFIS", "A gloomy werewolf town in Morytania"],
+  ["CATHERBY", "A coastal fishing town popular for Farming and Fishing"],
+  ["DORGESH-KAAN", "A hidden underground city inhabited by cave goblins"],
+  ["EAST ARDOUGNE", "A wealthy trading city in Kandarin"],
+  ["ENTRANA", "A peaceful island inhabited by monks"],
+  ["GNOME STRONGHOLD", "A massive tree city inhabited by gnomes"],
+  ["HOSIDIUS", "A fertile farming district within Great Kourend"],
+  ["KELDAGRIM", "A vast underground dwarven city"],
+  ["LLETYA", "A hidden elven settlement within the forests of Tirannwn"],
+  ["MENAPHOS", "A desert city sealed behind massive walls"],
+  ["MOS LE'HARMLESS", "A pirate-controlled island settlement"],
+  ["NEITIZNOT", "A Fremennik island village north of Rellekka"],
+  ["PISCARILIUS", "A port district of Great Kourend focused on fishing"],
+  ["PRIFDDINAS", "The crystal city of the elves"],
+  ["RELLEKKA", "A Fremennik warrior city on the northern coast"],
+  ["SHAYZIEN", "A military district of Great Kourend fighting the lizardmen"],
+  ["SOPHANEM", "A desert city associated with plagues and the dead"],
+  ["TAVERLEY", "A peaceful town associated with druids and Herblore"],
+  ["TREE GNOME VILLAGE", "A hidden gnome settlement protected by maze-like defences"],
+  ["WEST ARDOUGNE", "A quarantined section of Ardougne affected by plague"],
+  ["YANILLE", "A walled magical city south of Ardougne"]
+];
+
+const F2P_MONSTERS = [
+  ["CHICKEN", "A weak farm animal commonly killed for early combat training"],
+  ["COW", "A basic monster that drops cowhide and raw beef"],
+  ["DARK WIZARD", "A dangerous low-level mage found near Varrock"],
+  ["DEMON", "An infernal creature often fought for combat training"],
+  ["GIANT", "A large creature known for dropping big bones"],
+  ["GOBLIN", "A common low-level monster found across Gielinor"],
+  ["HILL GIANT", "A popular training monster found in Edgeville Dungeon"],
+  ["LESSER DEMON", "A powerful demon found in Karamja Volcano"],
+  ["MOSS GIANT", "A bulky giant often fought for keys and combat XP"],
+  ["SKELETON", "An undead creature found in dungeons and graveyards"]
+];
+
+const P2P_MONSTERS = [
+  ["ABYSSAL DEMON", "A high-level Slayer monster known for abyssal whips"],
+  ["BASILISK", "A reptilian Slayer creature found in Fremennik regions"],
+  ["CERBERUS", "A three-headed hellhound boss found in Taverley Dungeon"],
+  ["DRAKE", "A wingless draconic creature found in Karuulm Slayer Dungeon"],
+  ["GARGOYLE", "A Slayer monster requiring a rock hammer to finish"],
+  ["HYDRA", "An alchemical beast assigned through the Slayer skill"],
+  ["KRAKEN", "A sea monster boss fought using Magic"],
+  ["KURASK", "A Slayer creature immune to most weapon types"],
+  ["LIZARDMAN", "A reptilian enemy found across Great Kourend"],
+  ["WYRM", "A draconic Slayer creature found in Mount Karuulm"]
+];
+
+const SLAYER_MASTERS = [
+  ["CHAELDAR", "A mid-level Slayer Master located in Zanaris"],
+  ["DURADEL", "A high-level Slayer Master located in Shilo Village"],
+  ["KONAR", "A Slayer Master assigning location-specific tasks"],
+  ["KRYSTILIA", "A Wilderness Slayer Master located in Edgeville"],
+  ["MAZCHNA", "An early Slayer Master located in Canifis"],
+  ["NIEVE", "A popular Slayer Master found in the Tree Gnome Stronghold"],
+  ["SPRIA", "A beginner Slayer Master located in Draynor Village"],
+  ["TURAEL", "The easiest Slayer Master located in Burthorpe"],
+  ["VANNAKA", "A mid-level Slayer Master found in Edgeville Dungeon"]
+];
+
+const F2P_QUESTS = [
+  ["BLACK KNIGHTS' FORTRESS", "Help the White Knights uncover a secret plot"],
+  ["COOK'S ASSISTANT", "Gather ingredients for the Lumbridge Castle cook"],
+  ["DEMON SLAYER", "Defeat the demon Delrith in Varrock"],
+  ["DORIC'S QUEST", "Collect mining materials for Doric the dwarf"],
+  ["DRAGON SLAYER I", "Defeat Elvarg to earn the right to wear rune platebody"],
+  ["ERNEST THE CHICKEN", "Reverse a scientist's accidental chicken transformation"],
+  ["GOBLIN DIPLOMACY", "Settle an argument between goblin generals"],
+  ["IMP CATCHER", "Recover magical beads for Wizard Mizgog"],
+  ["PRINCE ALI RESCUE", "Help Prince Ali escape from Lady Keli"],
+  ["THE KNIGHT'S SWORD", "Forge a replacement sword for the White Knights"]
+];
+
+// List of word groups
+
+const WORD_GROUPS = [
+  OSRS_SKILLS,
+  RUNES,
+  F2P_CITIES,
+  P2P_CITIES,
+  F2P_MONSTERS,
+  P2P_MONSTERS,
+  SLAYER_MASTERS,
+  F2P_QUESTS,
+];
+
+const WORD_GROUP_NAMES = [
+  'Skills',
+  'Runes',
+  'F2P Cities',
+  'P2P Cities',
+  'F2P Monsters',
+  'P2P Monsters',
+  'Slayer Masters',
+  'F2P Quests',
+];
+
+const CATEGORY_HINT_IMAGES = {
+  'Skills': 'icons/skill.png',
+  'Runes': 'icons/pureEss.png',
+  'F2P Cities': 'icons/f2pLocations.png',
+  'P2P Cities': 'icons/p2pLocations.jpeg',
+  'F2P Monsters': 'icons/f2pMonsters.png',
+  'P2P Monsters': 'icons/p2pMonsters.png',
+  'Slayer Masters': 'icons/neiveSlayer.jpg',
+  'F2P Quests': 'icons/freeQuests.png',
+};
+
+function createCategoryHintSvg(title) {
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="720" height="400">
+      <rect width="100%" height="100%" fill="#1b1810" />
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+            font-family="Cinzel, serif" font-size="42" fill="#c8a951">${title}</text>
+    </svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
+function getCategoryHintImageUrl() {
+  const name = getTodaysCategoryName();
+  return CATEGORY_HINT_IMAGES[name] || createCategoryHintSvg(name);
+}
+
+// Randomly choose a word group
+
+function chooseRandomList() {
+  return WORD_GROUPS[Math.floor(Math.random() * WORD_GROUPS.length)];
+}
+
+function getCategoryIndex() {
+  return getDayNumber() % WORD_GROUPS.length;
+}
+
+function getTodaysCategoryName() {
+  return WORD_GROUP_NAMES[getCategoryIndex()];
+}
+
+function showTodaysCategory() {
+  const name = getTodaysCategoryName();
+  const img = document.getElementById('category-img');
+  const ov = document.getElementById('category-ov');
+
+  img.src = getCategoryHintImageUrl();
+  img.alt = `${name} hint`;
+  ov.classList.remove('hidden');
+}
+
+function showAllCategories() {
+  const list = document.getElementById('categories-list');
+  list.innerHTML = WORD_GROUP_NAMES
+    .map(name => `<span class="category-chip">${name}</span>`)
+    .join('');
+  document.getElementById('categories-ov').classList.remove('hidden');
+}
+
+//Math.floor function round down to nearest whole number
+//Mathr.random function gens a decimimal between 0 and 0.9 recurring
+//WORD_GROUPS.length gives the number of groups in the list
+//e.g. we have a Math.random() gen 0.3 and 8 items in the group
+//(Math.random() * WORD_GROUPS.length) = 0.3 * 8 = 2.4
+//Math.floor(2.4) = 2, so we select the group at index 2 in WORD_GROUPS
+
 // ────────────────────────────────────────────────
-// Deterministic daily selection
+// Deterministic daily selection - determines what #day we are on
 // ────────────────────────────────────────────────
 function getDayNumber() {
-  const origin = new Date(2024, 0, 1); // Jan 1 2024 = day 0
-  const now    = new Date();
-  now.setHours(0, 0, 0, 0);
-  return Math.floor((now - origin) / 86400000);
+  const origin = new Date(2026, 4, 14); // May 14 2026 = day 0 (release date)
+  const now    = new Date(); // date of user
+  now.setHours(0, 0, 0, 0); // set user date to midnight
+  return Math.floor((now - origin) / 86400000); //take users date and take away release date
+  // divide by number of milliseconds in a day (86400000)to get number of days since release
 }
 
 function seededShuffle(arr, seed) {
@@ -547,8 +785,13 @@ function seededShuffle(arr, seed) {
   return a;
 }
 
+
+
 // Shuffle once with a fixed seed so order is stable across sessions
-const SHUFFLED = seededShuffle(ANSWERS, 77777);
+const SHUFFLED = seededShuffle(
+  WORD_GROUPS[getDayNumber() % WORD_GROUPS.length],
+  77777
+);
 
 function getTodaysEntry() {
   return SHUFFLED[getDayNumber() % SHUFFLED.length];
@@ -1013,10 +1256,20 @@ function boot() {
   const helpOv  = document.getElementById('help-ov');
   const endOv   = document.getElementById('end-ov');
   const statsOv = document.getElementById('stats-ov');
+  const categoryOv = document.getElementById('category-ov');
+  const categoriesOv = document.getElementById('categories-ov');
 
   document.getElementById('help-btn').addEventListener('click', () => helpOv.classList.remove('hidden'));
   document.getElementById('help-x').addEventListener('click',   () => helpOv.classList.add('hidden'));
   helpOv.addEventListener('click', e => { if (e.target === helpOv) helpOv.classList.add('hidden'); });
+
+  document.getElementById('category-btn').addEventListener('click', showTodaysCategory);
+  document.getElementById('categories-btn').addEventListener('click', showAllCategories);
+  document.getElementById('category-x').addEventListener('click', () => categoryOv.classList.add('hidden'));
+  categoryOv.addEventListener('click', e => { if (e.target === categoryOv) categoryOv.classList.add('hidden'); });
+
+  document.getElementById('categories-x').addEventListener('click', () => categoriesOv.classList.add('hidden'));
+  categoriesOv.addEventListener('click', e => { if (e.target === categoriesOv) categoriesOv.classList.add('hidden'); });
 
   document.getElementById('stats-btn').addEventListener('click', openStatsModal);
   document.getElementById('stats-x').addEventListener('click',   () => statsOv.classList.add('hidden'));
