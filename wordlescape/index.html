@@ -577,14 +577,42 @@ const F2P_QUESTS = [
   ["THE KNIGHT'S SWORD", "Forge a replacement sword for the White Knights"]
 ];
 
+// List of word groups
+
+const WORD_GROUPS = [
+  OSRS_SKILLS,
+  RUNES,
+  F2P_CITIES,
+  P2P_CITIES,
+  F2P_MONSTERS,
+  P2P_MONSTERS,
+  SLAYER_MASTERS,
+  F2P_QUESTS,
+];
+
+
+// Randomly choose a word group
+
+function chooseRandomList() {
+  return WORD_GROUPS[Math.floor(Math.random() * WORD_GROUPS.length)];
+}
+
+//Math.floor function round down to nearest whole number
+//Mathr.random function gens a decimimal between 0 and 0.9 recurring
+//WORD_GROUPS.length gives the number of groups in the list
+//e.g. we have a Math.random() gen 0.3 and 8 items in the group
+//(Math.random() * WORD_GROUPS.length) = 0.3 * 8 = 2.4
+//Math.floor(2.4) = 2, so we select the group at index 2 in WORD_GROUPS
+
 // ────────────────────────────────────────────────
-// Deterministic daily selection
+// Deterministic daily selection - determines what #day we are on
 // ────────────────────────────────────────────────
 function getDayNumber() {
-  const origin = new Date(2024, 0, 1); // Jan 1 2024 = day 0
-  const now    = new Date();
-  now.setHours(0, 0, 0, 0);
-  return Math.floor((now - origin) / 86400000);
+  const origin = new Date(2026, 5, 14); // May 14 2026 = day 0 (release date)
+  const now    = new Date(); // date of user
+  now.setHours(0, 0, 0, 0); // set user date to midnight
+  return Math.floor((now - origin) / 86400000); //take users date and take away release date
+  // divide by number of milliseconds in a day (86400000)to get number of days since release
 }
 
 function seededShuffle(arr, seed) {
@@ -601,8 +629,10 @@ function seededShuffle(arr, seed) {
   return a;
 }
 
+
+
 // Shuffle once with a fixed seed so order is stable across sessions
-const SHUFFLED = seededShuffle(ANSWERS, 77777);
+const SHUFFLED = seededShuffle(chooseRandomList(), 77777);
 
 function getTodaysEntry() {
   return SHUFFLED[getDayNumber() % SHUFFLED.length];
