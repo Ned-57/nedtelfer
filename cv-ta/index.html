@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ned Telfer — Index</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --navy: #1E3A5F;
+      --ink: #1A1818;
+      --muted: #6A6660;
+      --border: #DDD8CF;
+      --bg: #F8F6F2;
+      --bg-card: #FFFFFF;
+      --accent-light: #EEF3FA;
+    }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.75;
+      min-height: 100vh;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 3rem;
+      height: 56px;
+    }
+
+    .nav-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500;
+      font-size: 1.1rem;
+      color: var(--navy);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 6rem 2rem 5rem;
+    }
+
+    .hero {
+      margin-bottom: 5rem;
+    }
+
+    .hero-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4.5rem;
+      font-weight: 500;
+      line-height: 1.05;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+
+    .hero-subtitle {
+      margin-top: 1rem;
+      max-width: 650px;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .section {
+      margin-top: 4rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--navy);
+      white-space: nowrap;
+    }
+
+    .section-rule {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .link-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .link-card:hover {
+      transform: translateY(-3px);
+      border-color: #C5D6EE;
+      background: var(--accent-light);
+    }
+
+    .link-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: var(--ink);
+    }
+
+    .link-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .link-list a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.92rem;
+      transition: color 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .link-list a::before {
+      content: '—';
+      color: var(--navy);
+    }
+
+    .link-list a:hover {
+      color: var(--navy);
+    }
+
+    footer {
+      margin-top: 6rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 720px) {
+      nav {
+        padding: 0 1.25rem;
+      }
+
+      main {
+        padding: 4rem 1.25rem;
+      }
+
+      .hero-title {
+        font-size: 3rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="/" class="nav-name">Ned Telfer</a>
+  </nav>
+
+  <main>
+
+    <section class="hero">
+      <p class="hero-label">Index / Landing Page</p>
+
+      <h1 class="hero-title">
+        Work,<br />
+        Projects & Research
+      </h1>
+
+    </section>
+
+    <!-- CVS -->
+    <section class="section">
+      <div class="section-header">
+        <span class="section-label">CVs</span>
+        <div class="section-rule"></div>
+      </div>
+
+      <div class="link-grid">
+
+        <div class="link-card">
+          <h2 class="link-card-title">Professional Profiles</h2>
+
+          <ul class="link-list">
+            <li>
+              <a href="/cv/software-engineer">
+                Software Engineer
+              </a>
+            </li>
+
+            <li>
+              <a href="/cv/technical-analysis">
+                Technical Analysis
+              </a>
+            </li>
+
+            <li>
+              <a href="/cv/biotechnology">
+                Biotechnology
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section">
+      <div class="section-header">
+        <span class="section-label">Projects</span>
+        <div class="section-rule"></div>
+      </div>
+
+      <div class="link-grid">
+
+        <div class="link-card">
+          <h2 class="link-card-title">Software & Experiments</h2>
+
+          <ul class="link-list">
+            <li>
+              <a href="/projects/wordlescape">
+                Wordlescape
+              </a>
+            </li>
+
+            <li>
+              <a href="/projects/fling">
+                Fling
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <footer>
+      © 2026 Ned Telfer
+    </footer>
+
+  </main>
+
+</body>
+</html>
