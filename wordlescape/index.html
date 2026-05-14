@@ -89,6 +89,38 @@
       padding: 10px 16px;
     }
 
+    .header-btns {
+  display: flex;
+  gap: 12px;           /* space between buttons */
+}
+
+.icon-btn {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #333;
+  border: 2px solid #555;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;           /* important */
+  overflow: hidden;     /* keeps image clean */
+}
+
+.icon-btn img {
+  width: 50px;          /* adjust icon size inside button */
+  height: 50px;
+  object-fit: contain;  /* keeps proportions */
+}
+
+.icon-btn:hover {
+  background: #555;
+  transform: scale(1.1);
+  border-color: #888;
+}
+
     .hidden {
       display: none !important;
     }
@@ -436,8 +468,12 @@
     <p id="day-info">Loading…</p>
   </div>
   <div class="header-btns">
-    <button class="icon-btn" id="help-btn" title="How to play">?</button>
-    <button class="icon-btn" id="stats-btn" title="Statistics">⚔</button>
+    <button class="icon-btn" id="help-btn" title="How to play">
+      <img src="icons/rules.png" alt="Rules">
+    </button>
+    <button class="icon-btn" id="stats-btn" title="Statistics">
+      <img src="icons/stats.png" alt="Stats">
+    </button>
   </div>
 </header>
 
@@ -678,36 +714,21 @@ const F2P_QUESTS = [
 // List of word groups
 
 const WORD_GROUPS = [
-  OSRS_SKILLS,
-  RUNES,
-  F2P_CITIES,
-  P2P_CITIES,
-  F2P_MONSTERS,
-  P2P_MONSTERS,
+
   SLAYER_MASTERS,
-  F2P_QUESTS,
+
 ];
 
 const WORD_GROUP_NAMES = [
-  'Skills',
-  'Runes',
-  'F2P Cities',
-  'P2P Cities',
-  'F2P Monsters',
-  'P2P Monsters',
+
   'Slayer Masters',
-  'F2P Quests',
+
 ];
 
 const CATEGORY_HINT_IMAGES = {
-  'Skills': 'icons/skill.png',
-  'Runes': 'icons/pureEss.png',
-  'F2P Cities': 'icons/f2pLocations.png',
-  'P2P Cities': 'icons/p2pLocations.jpeg',
-  'F2P Monsters': 'icons/f2pMonsters.png',
-  'P2P Monsters': 'icons/p2pMonsters.png',
+
   'Slayer Masters': 'icons/neiveSlayer.jpg',
-  'F2P Quests': 'icons/freeQuests.png',
+
 };
 
 function createCategoryHintSvg(title) {
