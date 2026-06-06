@@ -502,6 +502,7 @@
 
     <p class="help-body">Guess the <strong>OSRS-related word</strong> of the day. The word length — and category changes erry day!</p>
     <p class="help-body">Type letters and press <strong>Enter</strong> to submit. Press <strong>⌫</strong> to delete.</p>
+    <p class="help-body">Some answers are made of <strong>multiple words</strong> — use the <strong>Space</strong> bar (or your spacebar) to fill the gaps.</p>
 
     <hr class="rune">
 
@@ -1036,12 +1037,36 @@ function buildKeyboard() {
       row.appendChild(btn);
     });
   });
+
+  // Multi-word answers contain spaces, so offer a SPACE bar for them.
+  const kb = document.getElementById('keyboard');
+  let spaceRow = document.getElementById('space-row');
+  if (G.word.includes(' ')) {
+    if (!spaceRow) {
+      spaceRow = document.createElement('div');
+      spaceRow.className = 'key-row';
+      spaceRow.id = 'space-row';
+      kb.appendChild(spaceRow);
+    }
+    spaceRow.innerHTML = '';
+    const btn = document.createElement('button');
+    btn.className = 'key wide';
+    btn.style.flex = '4';
+    btn.style.maxWidth = '240px';
+    btn.textContent = 'SPACE';
+    btn.dataset.k = ' ';
+    btn.addEventListener('click', () => handleKey(' '));
+    spaceRow.appendChild(btn);
+  } else if (spaceRow) {
+    spaceRow.remove();
+  }
 }
 
 const KEY_PRIORITY = { correct: 3, present: 2, absent: 1 };
 
 function updateKeys(guess, result) {
   [...guess].forEach((letter, i) => {
+    if (letter === ' ') return;
     const btn = document.querySelector(`[data-k="${letter}"]`);
     if (!btn) return;
     const cur = btn.dataset.state;
@@ -1097,6 +1122,14 @@ function handleKey(k) {
 
   if (k === 'ENTER' || k === 'Enter') {
     submitGuess();
+    return;
+  }
+
+  if (k === ' ' || k === 'SPACE' || k === 'Spacebar') {
+    if (G.current.length < G.len) {
+      G.current.push(' ');
+      updateCurrentRow();
+    }
     return;
   }
 
@@ -1301,6 +1334,7 @@ function boot() {
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     if (e.key === 'Backspace') { handleKey('Backspace'); e.preventDefault(); }
     else if (e.key === 'Enter') { handleKey('Enter'); }
+    else if (e.key === ' ') { handleKey(' '); e.preventDefault(); }
     else if (/^[a-zA-Z]$/.test(e.key)) { handleKey(e.key.toUpperCase()); }
   });
 
