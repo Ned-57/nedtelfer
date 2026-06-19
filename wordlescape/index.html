@@ -20,8 +20,8 @@
       --gold-dim:    #8b7234;
       --text:        #f0dfa0;
       --text-dim:    #9a8860;
-      --correct:     #c8a951;
-      --present:     #b05318;
+      --correct:     #6aaa64;
+      --present:     #d4a72c;
       --absent:      #36322a;
       --absent-text: #605848;
       --key-bg:      #28220f;
@@ -256,7 +256,7 @@
     .tile.flip { animation: flip 0.18s ease; }
 
     .tile.correct { background: var(--correct); border-color: var(--correct); color: #0d0c08; }
-    .tile.present { background: var(--present); border-color: var(--present); color: var(--text); }
+    .tile.present { background: var(--present); border-color: var(--present); color: #0d0c08; }
     .tile.absent  { background: var(--absent);  border-color: var(--absent);  color: var(--absent-text); }
 
     @keyframes pop  { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
@@ -310,7 +310,7 @@
     .key:active { filter: brightness(1.2); }
 
     .key.correct { background: var(--correct); border-color: var(--correct); color: #0d0c08; }
-    .key.present { background: var(--present); border-color: var(--present); color: var(--text); }
+    .key.present { background: var(--present); border-color: var(--present); color: #0d0c08; }
     .key.absent  { background: var(--absent);  border-color: var(--absent);  color: var(--absent-text); }
 
     /* ── Modal overlay ── */
@@ -370,7 +370,7 @@
       font-size: 1rem; font-weight: 700;
     }
     .h-tile.correct { background: var(--correct); border-color: var(--correct); color: #0d0c08; }
-    .h-tile.present { background: var(--present); border-color: var(--present); }
+    .h-tile.present { background: var(--present); border-color: var(--present); color: #0d0c08; }
     .h-tile.absent  { background: var(--absent);  border-color: var(--absent); color: var(--absent-text); }
 
     .help-body { font-size: 0.78rem; color: var(--text-dim); line-height: 1.55; margin: 6px 0; }
@@ -478,7 +478,7 @@
 </header>
 
 <div class="header-subbtns">
-    <button class="icon-btn hidden" id="category-btn" title="Show today's category hint">Category Hint</button>
+    <button class="icon-btn" id="category-btn" title="Show today's category hint">Category Hint</button>
     <button class="icon-btn" id="categories-btn" title="Show all possible categories">All Possible Categories</button>
 </div>
 
@@ -509,12 +509,12 @@
     <div class="help-row">
       <div class="h-tile correct">B</div><div class="h-tile">O</div><div class="h-tile">N</div><div class="h-tile">E</div><div class="h-tile">S</div>
     </div>
-    <p class="help-body"><span style="color:var(--gold)">■ Gold</span> — correct letter, correct position.</p>
+    <p class="help-body"><span style="color:var(--correct)">■ Green</span> — correct letter, correct position.</p>
 
     <div class="help-row">
       <div class="h-tile">B</div><div class="h-tile present">O</div><div class="h-tile">N</div><div class="h-tile">E</div><div class="h-tile">S</div>
     </div>
-    <p class="help-body"><span style="color:var(--present)">■ Rust</span> — letter is in the word, but wrong position.</p>
+    <p class="help-body"><span style="color:var(--present)">■ Yellow</span> — letter is in the word, but wrong position.</p>
 
     <div class="help-row">
       <div class="h-tile">B</div><div class="h-tile">O</div><div class="h-tile absent">N</div><div class="h-tile">E</div><div class="h-tile">S</div>
@@ -797,11 +797,7 @@ function showAllCategories() {
 function updateCategoryButtonVisibility() {
   const btn = document.getElementById('category-btn');
   if (!btn) return;
-  if (G.guesses.length >= 3) {
-    btn.classList.remove('hidden');
-  } else {
-    btn.classList.add('hidden');
-  }
+  btn.classList.remove('hidden');
 }
 
 //Math.floor function round down to nearest whole number
