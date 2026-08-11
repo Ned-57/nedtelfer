@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ned Telfer — Software Engineer</title>
+  <title>Ned Telfer — Technical Analyst &amp; Software Engineer</title>
+  <meta name="description" content="Technical analyst and backend software engineer with four years at Sky UK, specialising in systems analysis, requirements, migrations, APIs and cross-team delivery. Remote-first and open to Vienna.">
+  <meta property="og:title" content="Ned Telfer — Technical Analyst &amp; Software Engineer">
+  <meta property="og:description" content="Four years at Sky UK across systems analysis, backend engineering, migrations, APIs and cross-team delivery. Remote-first and open to Vienna.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nedtelfer.com/">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -77,8 +82,8 @@
 
     /* HERO */
     #hero {
-      padding-top: 7rem;
-      padding-bottom: 6rem;
+      padding-top: 5rem;
+      padding-bottom: 4.5rem;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 4rem;
@@ -427,6 +432,13 @@
       .exp-item, .edu-item, .edu-alevels { grid-template-columns: 1fr; gap: 0.5rem; }
       section { padding: 3rem 1.25rem; }
     }
+
+    @media (max-width: 560px) {
+      .nav-links { gap: 0.9rem; }
+      .nav-links li:nth-child(1),
+      .nav-links li:nth-child(4) { display: none; }
+      .nav-links a { font-size: 0.72rem; }
+    }
   </style>
 </head>
 <body>
@@ -445,9 +457,9 @@
   <!-- HERO -->
   <section id="hero">
     <div>
-      <p class="hero-label">Software Engineer &nbsp;·&nbsp; Technical Analysis</p>
+      <p class="hero-label">Technical Analysis &nbsp;·&nbsp; Systems Integration &nbsp;·&nbsp; Software Engineering</p>
       <h1 class="hero-name">Ned<br>Telfer</h1>
-      <p class="hero-tagline">Remote &nbsp;·&nbsp; Open to Vienna</p>
+      <p class="hero-tagline">Remote-first &nbsp;·&nbsp; Contract or permanent &nbsp;·&nbsp; Open to Vienna</p>
     </div>
     <div>
       <div class="hero-bio">
@@ -455,13 +467,12 @@
           I am a backend software engineer with four years of professional experience at Sky UK, where I worked on distributed systems, microservices architecture, and large-scale infrastructure migration. My work required as much analytical and cross-functional thinking as it did engineering — scoping change, assessing risk, and coordinating across infrastructure, security, and delivery teams.
         </p>
         <p>
-          I am now looking to move into technical analysis roles, where I can apply that same systems thinking to bridging the gap between technical teams and business stakeholders.
+          I now focus on technical analysis and technical business analysis roles, building on work already central to my engineering career: clarifying requirements, mapping dependencies, assessing change and risk, and helping technical and non-technical stakeholders reach a shared plan.
         </p>
-        <p>
-          I hold a BSc (Hons) in Neuroscience from the University of Nottingham, and entered the industry via the QA Ltd Software Engineering Bootcamp and the Sparta Global C# programme — through which I was placed at Sky as a consultant before Sky bought me out of the contract to bring me on as a permanent employee.
       </div>
       <div class="hero-cta">
         <a href="mailto:nedtelfer@gmail.com" class="btn">Get in touch</a>
+        <a href="https://telfardo.com/" target="_blank" rel="noopener" class="btn btn-ghost">Client work</a>
         <a href="https://linkedin.com/in/ned-telfer-84722b159" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
         <a href="https://github.com/Ned-57" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
       </div>
@@ -745,7 +756,7 @@
     </div>
   </section>
 
-  <footer>&copy; 2025 Ned Telfer</footer>
+  <footer>&copy; 2026 Ned Telfer</footer>
 
   <script>
     const observer = new IntersectionObserver((entries) => {
