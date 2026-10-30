@@ -1,6 +1,6 @@
 # nedtelfer.com
 
-Personal site for Ned Telfer — a CV and portfolio aimed at job applications.
+Personal site for my CV and portfolio aimed at job applications.
 ## What's in it
 
 | Path | What it is |
