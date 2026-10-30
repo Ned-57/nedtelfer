@@ -1,40 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ned Telfer - Technical Analyst &amp; Software Engineer</title>
-  <meta name="description" content="Technical analyst and backend software engineer with four years at Sky UK, specialising in systems analysis, requirements, migrations, APIs and cross-team delivery.">
-  <meta property="og:title" content="Ned Telfer - Technical Analyst &amp; Software Engineer">
-  <meta property="og:description" content="Four years at Sky UK across systems analysis, backend engineering, migrations, APIs and cross-team delivery.">
+  <title>Ned Telfer - Software Engineer</title>
+  <meta name="description" content="Software engineer with four years at Sky UK on distributed systems, microservices and large-scale migration. Open to software engineering and adjacent roles.">
+  <meta name="theme-color" content="#F8F6F2" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#15171B" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://nedtelfer.com/">
+  <meta property="og:title" content="Ned Telfer - Software Engineer">
+  <meta property="og:description" content="Four years at Sky UK on distributed systems, microservices and large-scale migration.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://nedtelfer.com/">
   <meta property="og:site_name" content="Ned Telfer">
   <meta property="og:image" content="https://nedtelfer.com/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Ned Telfer - Technical Analyst and Software Engineer. Four years at Sky UK.">
+  <meta property="og:image:alt" content="Ned Telfer - Software Engineer. Four years at Sky UK.">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Ned Telfer - Technical Analyst &amp; Software Engineer">
-  <meta name="twitter:description" content="Four years at Sky UK across systems analysis, backend engineering, migrations, APIs and cross-team delivery.">
+  <meta name="twitter:title" content="Ned Telfer - Software Engineer">
+  <meta name="twitter:description" content="Four years at Sky UK on distributed systems, microservices and large-scale migration.">
   <meta name="twitter:image" content="https://nedtelfer.com/og.png">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Ned Telfer",
+    "jobTitle": "Software Engineer",
+    "url": "https://nedtelfer.com/",
+    "email": "mailto:nedtelfer@gmail.com",
+    "alumniOf": "University of Nottingham",
+    "sameAs": [
+      "https://linkedin.com/in/ned-telfer-84722b159",
+      "https://github.com/Ned-57",
+      "https://telfardo.com/"
+    ],
+    "knowsAbout": ["C#", ".NET", "Java", "Spring Boot", "Apache Kafka", "Kubernetes", "Python", "Distributed systems", "Applied AI"]
+  }
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --navy: #1E3A5F;
+      --navy: #1E3A5F;          /* accent used for text, rules, bullets */
+      --accent-fill: #1E3A5F;   /* button hover fill */
+      --on-accent: #FFFFFF;
       --ink: #1A1818;
-      --muted: #6A6660;
+      --muted: #67635D;
       --border: #DDD8CF;
       --bg: #F8F6F2;
       --bg-card: #FFFFFF;
       --accent-light: #EEF3FA;
+      --tag-border: #C5D6EE;
+      color-scheme: light;
     }
 
-    html { scroll-behavior: smooth; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --navy: #9DBBE3;
+        --accent-fill: #9DBBE3;
+        --on-accent: #12161C;
+        --ink: #ECE8E1;
+        --muted: #A39E95;
+        --border: #2D3139;
+        --bg: #15171B;
+        --bg-card: #1C1F25;
+        --accent-light: #1D2836;
+        --tag-border: #2F4460;
+        color-scheme: dark;
+      }
+    }
+    :root[data-theme="dark"] {
+      --navy: #9DBBE3;
+      --accent-fill: #9DBBE3;
+      --on-accent: #12161C;
+      --ink: #ECE8E1;
+      --muted: #A39E95;
+      --border: #2D3139;
+      --bg: #15171B;
+      --bg-card: #1C1F25;
+      --accent-light: #1D2836;
+      --tag-border: #2F4460;
+      color-scheme: dark;
+    }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 72px; }
 
     body {
       font-family: 'Jost', sans-serif;
@@ -43,7 +98,24 @@
       color: var(--ink);
       font-size: 16px;
       line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
     }
+
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
+
+    .skip-link {
+      position: absolute;
+      left: 1rem;
+      top: -100px;
+      background: var(--accent-fill);
+      color: var(--on-accent);
+      padding: 0.5rem 1rem;
+      z-index: 200;
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: 0.75rem; }
 
     /* NAV */
     nav {
@@ -84,19 +156,18 @@
 
     /* SECTIONS */
     section {
-      max-width: 900px;
+      max-width: 940px;
       margin: 0 auto;
       padding: 5rem 2rem;
     }
 
-    section + section { border-top: 1px solid var(--border); }
 
     /* HERO */
     #hero {
       padding-top: 5rem;
-      padding-bottom: 4.5rem;
+      padding-bottom: 3.5rem;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1.15fr;
       gap: 4rem;
       align-items: center;
     }
@@ -108,6 +179,7 @@
       text-transform: uppercase;
       color: var(--navy);
       margin-bottom: 1.2rem;
+      line-height: 1.8;
     }
 
     .hero-name {
@@ -119,17 +191,28 @@
       letter-spacing: -0.01em;
     }
 
+    .nw { white-space: nowrap; }
+
     .hero-tagline {
       font-size: 1rem;
       font-weight: 300;
       color: var(--muted);
-      margin-top: 0.5rem;
+      margin-top: 0.75rem;
     }
 
     .hero-bio { font-size: 1rem; font-weight: 300; line-height: 1.85; }
     .hero-bio p + p { margin-top: 1rem; }
+    .hero-bio strong { font-weight: 400; }
 
-    .hero-cta { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-cta {
+      margin-top: 2rem;
+      display: grid;
+      gap: 0.6rem;
+      width: max-content;
+      min-width: 200px;
+    }
+
+    .hero-cta .btn { text-align: center; }
 
     .btn {
       display: inline-block;
@@ -141,12 +224,35 @@
       font-weight: 500;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      transition: background 0.2s, color 0.2s;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
     }
 
-    .btn:hover { background: var(--navy); color: #fff; }
+    .btn:hover { background: var(--accent-fill); color: var(--on-accent); }
     .btn-ghost { border-color: var(--border); color: var(--muted); }
-    .btn-ghost:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .btn-ghost:hover { background: var(--accent-fill); color: var(--on-accent); border-color: var(--accent-fill); }
+
+    /* AT A GLANCE */
+    #glance { padding-top: 0; padding-bottom: 4.5rem; border-top: none; }
+
+    .glance-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .glance-item { background: var(--bg-card); padding: 1.3rem 1.4rem; }
+
+    .glance-figure {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 500;
+      line-height: 1.1;
+      color: var(--navy);
+    }
+
+    .glance-text { font-size: 0.82rem; color: var(--muted); line-height: 1.55; margin-top: 0.35rem; }
 
     /* SECTION HEADER */
     .section-header {
@@ -167,11 +273,19 @@
 
     .section-rule { flex: 1; height: 1px; background: var(--border); }
 
+    .section-intro {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin: -1.75rem 0 2.25rem;
+      max-width: 62ch;
+    }
+
+
     /* SKILLS */
     .skills-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
     }
 
     .skill-group {
@@ -198,7 +312,7 @@
       font-weight: 300;
       color: var(--ink);
       display: flex;
-      align-items: center;
+      align-items: baseline;
       gap: 0.5rem;
     }
 
@@ -209,7 +323,11 @@
       height: 4px;
       background: var(--navy);
       flex-shrink: 0;
+      transform: translateY(-0.2em);
     }
+
+    .indie { color: var(--muted); font-size: 0.8em; }
+    .skills-note { font-size: 0.8rem; color: var(--muted); margin-top: 1.25rem; }
 
     /* EXPERIENCE */
     .experience-list { display: flex; flex-direction: column; gap: 3.5rem; }
@@ -284,14 +402,14 @@
       padding: 0.2rem 0.6rem;
       background: var(--accent-light);
       color: var(--navy);
-      border: 1px solid #C5D6EE;
+      border: 1px solid var(--tag-border);
     }
 
     /* PROJECTS */
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
+      gap: 1.25rem;
     }
 
     .project-card {
@@ -303,12 +421,20 @@
       gap: 0.6rem;
     }
 
+    .project-kicker {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
     .project-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem;
+      font-size: 1.3rem;
       font-weight: 500;
       color: var(--ink);
-      line-height: 1.3;
+      line-height: 1.25;
     }
 
     .project-desc {
@@ -319,7 +445,22 @@
       flex: 1;
     }
 
-    .project-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.25rem; }
+
+    .project-links { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.5rem; }
+
+    .project-links a {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--navy);
+      text-decoration: none;
+      border-bottom: 1px solid var(--tag-border);
+      padding-bottom: 1px;
+    }
+
+    .project-links a:hover { border-bottom-color: var(--navy); }
 
     /* EDUCATION */
     .edu-list { display: flex; flex-direction: column; gap: 2.5rem; }
@@ -364,29 +505,14 @@
       line-height: 1.7;
     }
 
-    .edu-divider { border: none; border-top: 1px solid var(--border); }
-
-    .edu-alevels {
-      display: grid;
-      grid-template-columns: 180px 1fr;
-      gap: 2rem;
-      opacity: 0.65;
-    }
-
-    .edu-alevels .edu-degree {
-      font-family: 'Jost', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 400;
-      color: var(--muted);
-      margin-bottom: 0;
-    }
-
     /* CONTACT */
-    #contact { padding-bottom: 8rem; }
+    #contact { padding-bottom: 7rem; }
+
+    .contact-lead { font-size: 1rem; max-width: 60ch; margin-bottom: 2rem; }
 
     .contact-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1px;
       background: var(--border);
       border: 1px solid var(--border);
@@ -400,6 +526,7 @@
       flex-direction: column;
       gap: 0.3rem;
       transition: background 0.2s;
+      min-width: 0;
     }
 
     .contact-item:hover { background: var(--accent-light); }
@@ -412,7 +539,7 @@
       color: var(--muted);
     }
 
-    .contact-item-value { font-size: 0.9rem; font-weight: 400; color: var(--navy); }
+    .contact-item-value { font-size: 0.9rem; font-weight: 400; color: var(--navy); overflow-wrap: anywhere; }
 
     /* FOOTER */
     footer {
@@ -425,23 +552,37 @@
       letter-spacing: 0.04em;
     }
 
-    /* ANIMATIONS */
-    .fade-in {
+    footer a { color: var(--navy); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ANIMATIONS: only hide content once JS has confirmed it can reveal it */
+    .js .fade-in {
       opacity: 0;
       transform: translateY(20px);
       transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .js .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .js .fade-in { opacity: 1; transform: none; transition: none; }
+    }
 
     /* RESPONSIVE */
+    @media (max-width: 820px) {
+      .glance-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
     @media (max-width: 720px) {
-      nav { padding: 0 1.25rem; }
+      nav { padding: 0 1rem; }
       .nav-links { gap: 1.2rem; }
-      #hero { grid-template-columns: 1fr; gap: 2rem; padding-top: 4rem; }
+      #hero { grid-template-columns: 1fr; gap: 2rem; padding-top: 3.5rem; }
       .hero-name { font-size: 3rem; }
-      .exp-item, .edu-item, .edu-alevels { grid-template-columns: 1fr; gap: 0.5rem; }
-      section { padding: 3rem 1.25rem; }
+      .hero-cta { display: flex; flex-wrap: wrap; width: auto; min-width: 0; }
+      .exp-item, .edu-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      section { padding: 3rem 1rem; }
+      #glance { padding-bottom: 3rem; }
     }
 
     @media (max-width: 560px) {
@@ -449,12 +590,24 @@
       .nav-links li:nth-child(1),
       .nav-links li:nth-child(4) { display: none; }
       .nav-links a { font-size: 0.72rem; }
+      .glance-figure { font-size: 1.7rem; }
+    }
+
+    @media print {
+      nav, .hero-cta, .skip-link, footer { display: none; }
+      body { background: #fff; color: #000; font-size: 11pt; }
+      section { padding: 1.25rem 0; max-width: none; }
+      .js .fade-in { opacity: 1; transform: none; }
+      .skill-group, .project-card, .glance-item, .contact-item { break-inside: avoid; }
     }
   </style>
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
 
-  <nav>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav aria-label="Sections">
     <a href="#hero" class="nav-name">Ned Telfer</a>
     <ul class="nav-links">
       <li><a href="#skills">Skills</a></li>
@@ -465,85 +618,37 @@
     </ul>
   </nav>
 
+  <main id="main">
+
   <!-- HERO -->
   <section id="hero">
     <div>
-      <p class="hero-label">Technical Analysis &nbsp;·&nbsp; Systems Integration &nbsp;·&nbsp; Software Engineering</p>
-      <h1 class="hero-name">Ned<br>Telfer</h1>
-      <p class="hero-tagline">Remote-first &nbsp;·&nbsp; Contract or permanent &nbsp;·&nbsp; Open to UK & EU </p>
+      <p class="hero-label">
+        <span class="nw">Software Engineering ·</span>
+        <span class="nw">Technical Analysis ·</span>
+        <span class="nw">DevOps ·</span>
+        <span class="nw">On-call Support ·</span>
+        <span class="nw">AI Assisted</span>
+      </p>
+      <h1 class="hero-name">Ned Telfer</h1>
+      <!-- <div class="hero-cta">
+        <a href="mailto:nedtelfer@gmail.com" class="btn">Get in touch</a>
+        <a href="https://linkedin.com/in/ned-telfer-84722b159" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
+        <a href="https://github.com/Ned-57" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
+        <a href="https://telfardo.com/" target="_blank" rel="noopener" class="btn btn-ghost">Telfardo</a>
+      </div> -->
     </div>
     <div>
       <div class="hero-bio">
         <p>
-          I am a backend software engineer with four years of professional experience at Sky UK, where I worked on distributed systems, microservices architecture, and large-scale infrastructure migration. My work required as much analytical and cross-functional thinking as it did engineering — scoping change, assessing risk, and coordinating across infrastructure, security, and delivery teams.
+          I am a backend software engineer with four years of professional experience at Sky UK, where I worked on distributed systems, microservices architecture, and large-scale infrastructure migration. My work required as much analytical and cross-functional thinking as it did engineering scoping change, assessing risk, and coordinating across infrastructure, security, and delivery teams.
         </p>
         <p>
-          I now focus on technical analysis and technical business analysis roles, building on work already central to my engineering career: clarifying requirements, mapping dependencies, assessing change and risk, and helping technical and non-technical stakeholders reach a shared plan.
+          I am open to software engineering and related technical roles, building on work already central to my engineering career: clarifying requirements, mapping dependencies, assessing change and risk, and helping technical and non-technical stakeholders turn loose ideas into something buildable.
         </p>
         <p>
-          I hold a BSc (Hons) in Neuroscience from the University of Nottingham, and entered the industry via the QA Ltd Software Engineering Bootcamp and the Sparta Global C# programme — through which I was placed at Sky as a consultant before Sky bought me out of the contract to bring me on as a permanent employee.
+          I hold a BSc (Hons) in Neuroscience from the University of Nottingham, and entered the industry via a Software Engineering Bootcamp and the Sparta Global C# programme through which I was placed at Sky as a consultant before Sky bought me out of the contract to bring me on as a permanent employee.
         </p>
-      </div>
-      <div class="hero-cta">
-        <a href="mailto:nedtelfer@gmail.com" class="btn">Get in touch</a>
-        <a href="https://telfardo.com/" target="_blank" rel="noopener" class="btn btn-ghost">Client work</a>
-        <a href="https://linkedin.com/in/ned-telfer-84722b159" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
-        <a href="https://github.com/Ned-57" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- SKILLS -->
-  <section id="skills">
-    <div class="section-header fade-in">
-      <span class="section-label">Skills</span>
-      <div class="section-rule"></div>
-    </div>
-    <div class="skills-grid">
-      <div class="skill-group fade-in">
-        <p class="skill-group-title">Analysis &amp; Process</p>
-        <ul class="skill-list">
-          <li>Systems &amp; impact analysis</li>
-          <li>Technical documentation</li>
-          <li>Requirements gathering</li>
-          <li>Change management</li>
-          <li>Root cause investigation</li>
-          <li>Risk assessment</li>
-          <li>Agile / Scrum</li>
-        </ul>
-      </div>
-      <div class="skill-group fade-in">
-        <p class="skill-group-title">Languages &amp; Frameworks</p>
-        <ul class="skill-list">
-          <li>Java &amp; Spring Boot</li>
-          <li>C# &amp; .NET / ASP.NET Core</li>
-          <li>SQL &amp; PL/SQL</li>
-          <li>JavaScript</li>
-          <li>Apache Camel</li>
-          <li>Entity Framework</li>
-        </ul>
-      </div>
-      <div class="skill-group fade-in">
-        <p class="skill-group-title">Infrastructure &amp; DevOps</p>
-        <ul class="skill-list">
-          <li>Kubernetes &amp; Helm</li>
-          <li>Docker</li>
-          <li>AWS</li>
-          <li>CI/CD (TeamCity, Jenkins, Octopus Deploy)</li>
-          <li>PowerShell &amp; Bash</li>
-          <li>Vault Secrets Operator</li>
-        </ul>
-      </div>
-      <div class="skill-group fade-in">
-        <p class="skill-group-title">Data &amp; Messaging</p>
-        <ul class="skill-list">
-          <li>Apache Kafka &amp; Kafka Connect</li>
-          <li>Event-driven architecture</li>
-          <li>CouchbaseDB</li>
-          <li>Oracle &amp; MS SQL Server</li>
-          <li>Prometheus monitoring</li>
-          <li>SQL query optimisation</li>
-        </ul>
       </div>
     </div>
   </section>
@@ -551,7 +656,7 @@
   <!-- EXPERIENCE -->
   <section id="experience">
     <div class="section-header fade-in">
-      <span class="section-label">Experience</span>
+      <h2 class="section-label">Experience</h2>
       <div class="section-rule"></div>
     </div>
     <div class="experience-list">
@@ -562,33 +667,36 @@
           <p class="exp-period">Jul 2022 – Mar 2026<br>Remote</p>
         </div>
         <div>
-          <h2 class="exp-role">Software Developer</h2>
-          <p class="exp-team">CP Rights Platform — content protection &amp; rights management</p>
+          <h3 class="exp-role">Software Developer</h3>
+          <p class="exp-team">CP Rights: content-rights platform for Sky's broadcast and streaming products</p>
           <p class="exp-desc">
-            Worked on the backend platform responsible for managing content rights across Sky's streaming and broadcast services. The role combined hands-on engineering with substantial analytical work — scoping migrations, assessing risk across interconnected services, authoring change documentation, and coordinating delivery across platform, infrastructure, and security teams.
+            Software engineer on a business-critical, distributed platform. I owned features from an unclear requirement through analysis, build and testing to production support, and shared the on-call rota for the live estate.
           </p>
           <ul class="exp-bullets">
-            <li>Helped lead the transition from a monolithic Oracle database to a distributed architecture using Kafka Connect CDC, Spring Java microservices, and CouchbaseDB — significantly improving scalability and performance.</li>
-            <li>Implemented Kafka-based event streaming for real-time data processing and integration between disparate systems.</li>
-            <li>Led technical analysis and migration planning for 8+ microservices to Sky's CloudGrid private cloud, assessing dependencies, surface-area risks, and rollout sequencing.</li>
-            <li>Owned formal change requests for production deployments, including impact assessments and rollback procedures reviewed by infrastructure and security stakeholders.</li>
-            <li>Assessed and executed framework migrations from Spring Boot 2 to 3 and Apache Camel 3 to 4, identifying breaking changes and namespace conflicts before they reached production.</li>
-            <li>Designed and implemented a Prometheus metrics labelling strategy across the platform, improving observability and enabling more accurate monitoring and alerting.</li>
-            <li>Enhanced CI/CD pipelines by integrating new services using PowerShell and Octopus Deploy, improving deployment automation and reliability.</li>
-            <li>Led the integration of third-party vendor services from testing through production release, coordinating across teams to ensure robust connections.</li>
-            <li>Optimised database performance through SQL query analysis across Oracle and MS SQL Server.</li>
+            <li>Designed, built and maintained backend services and REST APIs across a distributed estate, including API-gateway capabilities for routing, authentication and rate limiting.</li>
+            <li>Owned a stitched-episode capability end to end: clarified the requirement with scheduling teams, designed the composite asset data model, wrote the acceptance criteria and delivered both the service and the UI that consumed it.</li>
+            <li>Helped move a monolithic Oracle data layer towards distributed services using Kafka Connect CDC, Spring Boot microservices and CouchbaseDB, modelling the data flows, dependencies and migration risks.</li>
+            <li>Independently led the migration of deployment pipelines for 30+ team-owned services and libraries onto Sky's Kubernetes-based CloudGrid platform, learning the platform with limited support.</li>
+            <li>Wrote formal change requests for production deployments, with impact assessments and rollback procedures reviewed by infrastructure and security stakeholders.</li>
+            <li>Upgraded Spring Boot 2 to 3 and Apache Camel 3 to 4, catching breaking changes and namespace conflicts before they reached production.</li>
+            <li>Designed a Prometheus metrics-labelling strategy across the platform, giving more accurate monitoring and alerting.</li>
+            <li>Worked the 24/7 support rota (one week in every four to six): investigated production faults with SQL, logs and Prometheus, ran incidents and changes through ServiceNow, and owned controlled releases with rollback plans and live verification.</li>
+            <li>Agreed API contracts with the frontend developers consuming them, and took third-party vendor integrations from testing through to production, debugging communication between internal services and external systems.</li>
+            <li>Kept technical documentation, data models and API specifications current alongside the code, and reviewed teammates' changes.</li>
           </ul>
           <div class="exp-tags">
-            <span class="tag">Java</span>
+            <span class="tag">C# / .NET</span>
+            <span class="tag">Java 17</span>
             <span class="tag">Spring Boot</span>
             <span class="tag">Kafka</span>
             <span class="tag">CouchbaseDB</span>
+            <span class="tag">Oracle PL/SQL</span>
+            <span class="tag">MS SQL Server</span>
             <span class="tag">Kubernetes</span>
             <span class="tag">Docker</span>
-            <span class="tag">Apache Camel</span>
             <span class="tag">Prometheus</span>
             <span class="tag">Octopus Deploy</span>
-            <span class="tag">Oracle</span>
+            <span class="tag">Requirements</span>
             <span class="tag">Change Management</span>
           </div>
         </div>
@@ -596,27 +704,21 @@
 
       <div class="exp-item fade-in">
         <div class="exp-meta">
-          <p class="exp-company">Sparta Global / Sky</p>
+          <p class="exp-company">Sparta Global → Sky</p>
           <p class="exp-period">Feb 2022 – Jul 2022<br>Remote &amp; Osterley</p>
         </div>
         <div>
-          <h2 class="exp-role">Software Developer — Trainee &amp; Consultant</h2>
-          <p class="exp-team">Sparta Global training programme, placed at Sky UK</p>
-          <p class="exp-desc">
-            Completed an intensive 8-week software development programme with Sparta Global before transitioning into a consultant role at Sky. Performed well enough as a consultant to be hired by Sky as a permanent employee after five months.
-          </p>
+          <h3 class="exp-role">Software Engineering Consultant</h3>
+          <p class="exp-team">Sparta Global C# programme, placed at Sky UK</p>
           <ul class="exp-bullets">
-            <li>Completed training covering C#, OOP, TDD, Design Patterns, Agile, SQL, and full-stack development.</li>
-            <li>Built training projects including REST APIs with ASP.NET Core and Entity Framework.</li>
-            <li>Transitioned directly into Sky's CP Rights platform team as a consultant, delivering against production requirements from the outset.</li>
+            <li>Completed an intensive 8-week programme in C#, OOP, TDD, design patterns, Agile, SQL and full-stack development; built REST APIs with ASP.NET Core and Entity Framework.</li>
+            <li>Placed into Sky's CP Rights team as a consultant, delivering production requirements from the outset. Sky bought out the contract to hire me permanently after five months.</li>
           </ul>
           <div class="exp-tags">
             <span class="tag">C#</span>
             <span class="tag">ASP.NET Core</span>
             <span class="tag">Entity Framework</span>
             <span class="tag">TDD</span>
-            <span class="tag">SQL</span>
-            <span class="tag">Agile</span>
           </div>
         </div>
       </div>
@@ -624,76 +726,163 @@
     </div>
   </section>
 
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-header fade-in">
+      <h2 class="section-label">Skills</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-group fade-in">
+        <h3 class="skill-group-title">Languages &amp; Frameworks</h3>
+        <ul class="skill-list">
+          <li>C# &amp; .NET / ASP.NET Core</li>
+          <li>Java 17 &amp; Spring Boot</li>
+          <li>SQL &amp; PL/SQL</li>
+          <li>Apache Camel</li>
+          <li>Entity Framework</li>
+          <li>Python </li>
+          <li>TypeScript / JavaScript </li>
+        </ul>
+      </div>
+      <div class="skill-group fade-in">
+        <h3 class="skill-group-title">Data &amp; Messaging</h3>
+        <ul class="skill-list">
+          <li>Apache Kafka &amp; Kafka Connect CDC</li>
+          <li>Event-driven architecture</li>
+          <li>CouchbaseDB</li>
+          <li>Oracle (procedures, scheduled jobs)</li>
+          <li>MS SQL Server</li>
+          <li>Data modelling &amp; migration</li>
+        </ul>
+      </div>
+      <div class="skill-group fade-in">
+        <h3 class="skill-group-title">Platform &amp; Delivery</h3>
+        <ul class="skill-list">
+          <li>Kubernetes &amp; Helm</li>
+          <li>Docker</li>
+          <li>CI/CD (TeamCity, Jenkins, Octopus Deploy)</li>
+          <li>Prometheus metrics &amp; alerting</li>
+          <li>Vault Secrets Operator</li>
+          <li>PowerShell &amp; Bash</li>
+        </ul>
+      </div>
+      <div class="skill-group fade-in">
+        <h3 class="skill-group-title">Applied AI &amp; Tooling</h3>
+        <ul class="skill-list">
+          <li>Anthropic SDK </li>
+          <li>MCP tools </li>
+          <li>LLM content pipelines </li>
+          <li>Streamed, serverless APIs </li>
+          <li>GitHub Copilot</li>
+        </ul>
+      </div>
+      <div class="skill-group fade-in">
+        <h3 class="skill-group-title">Analysis &amp; Quality</h3>
+        <ul class="skill-list">
+          <li>Requirements &amp; acceptance criteria</li>
+          <li>Impact &amp; dependency analysis</li>
+          <li>Change management &amp; rollback planning</li>
+          <li>TDD &amp; integration testing</li>
+          <li>Root-cause analysis</li>
+          <li>Technical documentation &amp; API specs</li>
+          <li>ServiceNow incidents &amp; change</li>
+          <li>Agile / Scrum</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <!-- PROJECTS -->
   <section id="projects">
     <div class="section-header fade-in">
-      <span class="section-label">Project Highlights</span>
+      <h2 class="section-label">Independent Work</h2>
       <div class="section-rule"></div>
     </div>
+    <p class="section-intro fade-in">Built in my own time, outside Sky. This is where my Python, TypeScript and applied-AI experience comes from.</p>
     <div class="projects-grid">
 
-      <div class="project-card fade-in">
-        <p class="project-title">Distributed Data Architecture</p>
-        <p class="project-desc">Led the transition from a monolithic Oracle database to a distributed architecture using Kafka Connect CDC, Spring Java microservices, and CouchbaseDB. Involved extensive upfront analysis of data flows, dependencies, and migration risk before any code was written.</p>
+      <article class="project-card fade-in">
+        <p class="project-kicker">Web · Product</p>
+        <h3 class="project-title">Telfardo</h3>
+        <p class="project-desc">My independent web-development and product brand, showcasing six web-app demos alongside client work.</p>
         <div class="project-tags">
-          <span class="tag">Kafka Connect</span>
-          <span class="tag">Spring Boot</span>
-          <span class="tag">CouchbaseDB</span>
-          <span class="tag">Oracle</span>
+          <span class="tag">Web</span>
+          <span class="tag">Product</span>
         </div>
-      </div>
+        <div class="project-links">
+          <a href="https://telfardo.com/" target="_blank" rel="noopener">telfardo.com ↗</a>
+        </div>
+      </article>
 
-      <div class="project-card fade-in">
-        <p class="project-title">Event-Streaming Platform</p>
-        <p class="project-desc">Implemented a Kafka-based event streaming solution for real-time data processing across Sky's rights management systems, enabling seamless integration between disparate services.</p>
+      <article class="project-card fade-in">
+        <p class="project-kicker">Java · Open source</p>
+        <h3 class="project-title">RuneLite Plugins</h3>
+        <p class="project-desc">A variety of open-source Java plugins for the RuneLite game client, including work published through the official Plugin Hub after review by the project's maintainers.</p>
         <div class="project-tags">
-          <span class="tag">Kafka</span>
-          <span class="tag">Event-Driven</span>
           <span class="tag">Java</span>
+          <span class="tag">Open Source</span>
+          <span class="tag">Code Review</span>
         </div>
-      </div>
+        <div class="project-links">
+          <a href="https://github.com/YonwiPlugins" target="_blank" rel="noopener">YonwiPlugins on GitHub ↗</a>
+        </div>
+      </article>
 
-      <div class="project-card fade-in">
-        <p class="project-title">API Gateway Implementation</p>
-        <p class="project-desc">Designed and deployed API gateway services to manage routing, authentication, and rate limiting across the microservices estate.</p>
+      <article class="project-card fade-in">
+        <p class="project-kicker">Client work · Web</p>
+        <h3 class="project-title">Ed White Tutors</h3>
+        <p class="project-desc">A client website delivered end to end through Telfardo, from the initial brief through build to deployment.</p>
         <div class="project-tags">
-          <span class="tag">API Design</span>
-          <span class="tag">Microservices</span>
-          <span class="tag">Spring Boot</span>
+          <span class="tag">Web</span>
+          <span class="tag">Client Delivery</span>
         </div>
-      </div>
+        <div class="project-links">
+          <a href="https://edtutors.telfardo.com/" target="_blank" rel="noopener">edtutors.telfardo.com ↗</a>
+        </div>
+      </article>
 
-      <div class="project-card fade-in">
-        <p class="project-title">CloudGrid Migration Programme</p>
-        <p class="project-desc">Scoped and led the migration of 8+ microservices to Sky's CloudGrid private cloud infrastructure. Authored change requests, assessed cross-service dependencies, and coordinated approval across platform and security stakeholders.</p>
-        <div class="project-tags">
-          <span class="tag">Kubernetes</span>
-          <span class="tag">Helm</span>
-          <span class="tag">Change Management</span>
-          <span class="tag">CloudGrid</span>
-        </div>
-      </div>
 
-      <div class="project-card fade-in">
-        <p class="project-title">CI/CD Pipeline Enhancement</p>
-        <p class="project-desc">Extended Sky's deployment pipeline to support new services using PowerShell and Octopus Deploy, improving deployment automation and reducing manual release overhead.</p>
+      <article class="project-card fade-in">
+        <p class="project-kicker">Python · LLM tooling</p>
+        <h3 class="project-title">web2md</h3>
+        <p class="project-desc">A Python pipeline and MCP tool that scrapes web pages and restructures them into clean Markdown for a locally hosted LLM to read, replacing a repetitive manual research workflow.</p>
         <div class="project-tags">
-          <span class="tag">Octopus Deploy</span>
-          <span class="tag">PowerShell</span>
-          <span class="tag">TeamCity</span>
-          <span class="tag">Jenkins</span>
+          <span class="tag">Python</span>
+          <span class="tag">MCP</span>
+          <span class="tag">Scraping</span>
         </div>
-      </div>
+        <div class="project-links">
+          <a href="https://github.com/Ned-57" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </article>
 
-      <div class="project-card fade-in">
-        <p class="project-title">Third-Party Vendor Integration</p>
-        <p class="project-desc">Led the integration of third-party vendor services from testing through production, defining integration requirements, coordinating with external parties, and ensuring reliable connections across environments.</p>
+      <article class="project-card fade-in">
+        <p class="project-kicker">TypeScript · Serverless</p>
+        <h3 class="project-title">Streaming Claude API</h3>
+        <p class="project-desc">A serverless TypeScript API on Netlify Functions using the Anthropic SDK, with streamed responses, request validation, bounded conversation history and graceful failure handling.</p>
         <div class="project-tags">
-          <span class="tag">API Integration</span>
-          <span class="tag">Testing</span>
-          <span class="tag">Stakeholder Coordination</span>
+          <span class="tag">TypeScript</span>
+          <span class="tag">Anthropic SDK</span>
+          <span class="tag">Netlify Functions</span>
         </div>
-      </div>
+        <div class="project-links">
+          <a href="https://github.com/Ned-57" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </article>
+
+      <article class="project-card fade-in">
+        <p class="project-kicker">JavaScript · Game</p>
+        <h3 class="project-title">Wordlescape</h3>
+        <p class="project-desc">A daily Old School RuneScape word game with themed categories and hints. One self-contained HTML file with no build step or dependencies, hosted on this site.</p>
+        <div class="project-tags">
+          <span class="tag">JavaScript</span>
+          <span class="tag">HTML / CSS</span>
+        </div>
+        <div class="project-links">
+          <a href="/wordlescape/">Play it →</a>
+        </div>
+      </article>
 
     </div>
   </section>
@@ -701,55 +890,40 @@
   <!-- EDUCATION -->
   <section id="education">
     <div class="section-header fade-in">
-      <span class="section-label">Education &amp; Training</span>
+      <h2 class="section-label">Education &amp; Training</h2>
       <div class="section-rule"></div>
     </div>
     <div class="edu-list">
-      <div class="edu-item fade-in">
-        <div class="edu-meta">
-          <p class="edu-institution">Sparta Global</p>
-          <p class="edu-year">Feb 2022 – Jul 2022<br>Remote</p>
-        </div>
-        <div>
-          <h2 class="edu-degree">C# Developer Training</h2>
-          <p class="edu-detail">Structured 8-week programme in C#, OOP, TDD, Design Patterns, Agile, SQL, and full-stack development using ASP.NET Core and Entity Framework. Led to a consultant placement at Sky UK.</p>
-        </div>
-      </div>
-            <div class="edu-item fade-in">
-        <div class="edu-meta">
-          <p class="edu-institution">QA Ltd</p>
-          <p class="edu-year">Oct 2021 – Jan 2022<br>Remote</p>
-        </div>
-        <div>
-          <h2 class="edu-degree">Bootcamp in Software Engineering</h2>
-          <p class="edu-detail">Intensive full-stack software engineering programme covering core development principles, version control, testing, and agile working practices. Primarily Java-focused.</p>
-        </div>
-      </div>
       <div class="edu-item fade-in">
         <div class="edu-meta">
           <p class="edu-institution">University of Nottingham</p>
           <p class="edu-year">Sep 2016 – Jun 2020</p>
         </div>
         <div>
-          <h2 class="edu-degree">BSc (Hons) Neuroscience</h2>
-          <p class="edu-detail">Developed strong foundations in analytical thinking, experimental design, and working with complex interconnected systems. The degree required rigorous data interpretation and the ability to communicate technical findings clearly to non-specialist audiences.</p>
+          <h3 class="edu-degree">BSc (Hons) Neuroscience</h3>
+          <p class="edu-detail">Foundations in experimental design, rigorous data interpretation and explaining technical findings to non-specialist audiences.</p>
         </div>
       </div>
-
-
-
-      
-
-
+      <div class="edu-item fade-in">
+        <div class="edu-meta">
+          <p class="edu-institution">QA Ltd</p>
+          <p class="edu-year">Oct 2021 – Jan 2022<br>Remote</p>
+        </div>
+        <div>
+          <h3 class="edu-degree">Software Engineering Bootcamp</h3>
+          <p class="edu-detail">Intensive full-stack programme, primarily Java, covering core development principles, version control, testing and agile practice.</p>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- CONTACT -->
   <section id="contact">
     <div class="section-header fade-in">
-      <span class="section-label">Contact</span>
+      <h2 class="section-label">Contact</h2>
       <div class="section-rule"></div>
     </div>
+    <p class="contact-lead fade-in">Open to software engineering and adjacent roles, permanent or contract. Email is the quickest way to reach me.</p>
     <div class="contact-grid fade-in">
       <a class="contact-item" href="mailto:nedtelfer@gmail.com">
         <span class="contact-item-label">Email</span>
@@ -761,24 +935,36 @@
       </a>
       <a class="contact-item" href="https://linkedin.com/in/ned-telfer-84722b159" target="_blank" rel="noopener">
         <span class="contact-item-label">LinkedIn</span>
-        <span class="contact-item-value">linked.in/ned</span>
+        <span class="contact-item-value">in/ned-telfer</span>
       </a>
       <a class="contact-item" href="https://github.com/Ned-57" target="_blank" rel="noopener">
         <span class="contact-item-label">GitHub</span>
-        <span class="contact-item-value">github.com/ned</span>
+        <span class="contact-item-value">github.com/Ned-57</span>
       </a>
     </div>
   </section>
 
-  <footer>&copy; 2026 Ned Telfer</footer>
+  </main>
+
+  <footer>&copy; 2026 Ned Telfer &nbsp;</footer>
 
   <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    (function () {
+      var items = document.querySelectorAll('.fade-in');
+      if (!('IntersectionObserver' in window)) {
+        items.forEach(function (el) { el.classList.add('visible'); });
+        return;
+      }
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      items.forEach(function (el) { observer.observe(el); });
+    })();
   </script>
 
 </body>
