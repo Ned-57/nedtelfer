@@ -10,7 +10,7 @@ Personal site for Ned Telfer — a CV and portfolio aimed at job applications.
 
 ## Stack
 
-Plain, deliberately. There is **no build step, no package manager and no dependencies to install** — every page is a single HTML file with its CSS in one `<style>` block and its JavaScript in one `<script>` block.
+Plain, deliberately. There is **no build step, no package manager and no dependencies to install** - every page is a single HTML file with its CSS in one `<style>` block and its JavaScript in one `<script>` block.
 
 The only external requests are Google Fonts, and links out to GitHub and LinkedIn. Nothing else is fetched at runtime.
 
@@ -22,7 +22,7 @@ Open the file:
 start index.html
 ```
 
-That works for everything except paths — links between pages assume they're served from a web root. If you're testing navigation, serve the folder instead:
+That works for everything except paths. Links between pages assume they're served from a web root. If you're testing navigation, serve the folder instead:
 
 ```bash
 python -m http.server 8000
@@ -32,16 +32,15 @@ Then visit http://localhost:8000.
 
 ## Editing
 
-Because each page is one file, edits are direct: find the section in the HTML and change it. There is no templating, so anything appearing on more than one page — the nav, the footer year — has to be changed in each file that uses it.
+All pages are in one file, edits are direct: find the section in the HTML and change it.
 
-Two things worth keeping consistent when editing `index.html`:
+Keeping consistent when editing `index.html`:
 
 - **Dates and tenure.** The intro paragraph states a number of years of experience. If a role's dates change, check that sentence still adds up — it has contradicted the experience list before.
-- **Job titles.** The experience entries carry official job titles; the intro describes the discipline. Those are allowed to differ, but neither should drift into something that wasn't the case.
-
+- **Job titles.** The experience entries carry official job titles; the intro describes the discipline.
 ## Deployment
 
-Hosted on **Netlify**, deployed automatically from `main`. There's no `netlify.toml` — the build settings live in the Netlify UI, and since there's no build step it just publishes the repository root. Pushing to `main` is a deploy.
+Hosted on **Netlify**, deployed automatically from `main` upon push.
 
 ## Domain
 
