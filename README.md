@@ -1,16 +1,12 @@
 # nedtelfer.com
 
-Personal site for Ned Telfer — a CV and portfolio aimed at job applications, plus a couple of small self-contained projects.
-
-Not to be confused with [telfardo.com](https://telfardo.com), which is the freelance business. Different audience, different pitch: this site is written for recruiters and hiring managers, so keep career positioning here and client-facing sales copy there.
-
+Personal site for Ned Telfer — a CV and portfolio aimed at job applications.
 ## What's in it
 
 | Path | What it is |
 | --- | --- |
 | `index.html` | The CV: profile, experience, education, contact. The page people are actually sent to. |
 | `wordlescape/` | Wordlescape — a daily OSRS-themed Wordle. Self-contained game with its own icon set in `wordlescape/icons/`. |
-| `circus-performer/` | A one-page joke site. |
 
 ## Stack
 
