@@ -269,9 +269,9 @@
     <section class="hero wrap" id="top" aria-labelledby="hero-title">
       <div class="hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow">Software development · Technical analysis · Delivery</p>
+          <p class="eyebrow">Product delivery · Technical analysis · Software engineering</p>
           <h1 id="hero-title">I turn complex technical work into clear delivery.</h1>
-          <p class="hero-lead"><strong>Four years at Sky UK</strong>, working across software development, systems analysis, integrations and production support for broadcast and streaming products.</p>
+          <p class="hero-lead"><strong>Four years at Sky UK</strong> as a software engineer on CP Rights, the content-rights platform behind Sky's broadcast and streaming products. Alongside hands-on engineering, I worked directly with rights, scheduling and finance stakeholders to turn business needs into user stories and acceptance criteria, prioritise delivery, manage scope and dependencies, and carry changes through release and live support.</p>
           <p class="availability">Open to software engineering and adjacent roles, including <strong>Technical Analyst, Systems Analyst, Business Analyst and Product Owner.</strong></p>
           <div class="hero-actions" aria-label="Quick links">
             <a class="button button-primary" href="mailto:nedtelfer@gmail.com">Get in touch</a>
@@ -294,6 +294,17 @@
       </div>
     </section>
 
+    <section class="section" id="case-study" aria-labelledby="case-study-title">
+      <div class="wrap">
+        <div class="section-heading"><h2 class="section-kicker" id="case-study-title">Featured work</h2><span class="section-rule" aria-hidden="true"></span></div>
+        <article class="project-card">
+          <p class="project-kicker">Sky UK · CP Rights</p><h3 class="project-title">Stitched-episode capability</h3>
+          <p class="project-desc">Schedulers wanted consecutive episodes, such as Peppa Pig, to air as one block rather than as separate listings, and had been working around it by booking episodes back to back. I agreed the requirements and acceptance criteria with them, designed a data model that creates one schedulable item which downstream TV shows as a single listing, and built the C# and Oracle PL/SQL back end and WinForms screens. Rights deals grant a set number of plays per programme, so the design counts each airing as a play against every episode in the block.</p>
+          <div class="tags"><span class="tag">Requirements</span><span class="tag">Stakeholder collaboration</span><span class="tag">Solution design</span><span class="tag">C#</span><span class="tag">Oracle PL/SQL</span></div>
+        </article>
+      </div>
+    </section>
+
     <section class="section" id="experience" aria-labelledby="experience-title">
       <div class="wrap">
         <div class="section-heading"><h2 class="section-kicker" id="experience-title">Experience</h2><span class="section-rule" aria-hidden="true"></span></div>
@@ -303,14 +314,17 @@
             <div>
               <h3 class="role-title">Software Developer</h3>
               <p class="team">CP Rights · Content-rights platform for Sky's broadcast and streaming products</p>
-              <p class="experience-summary">Worked across a business-critical distributed platform, taking features from requirement analysis through implementation and testing to production support. Shared the on-call rota for the live estate.</p>
+              <p class="experience-summary">Worked across a business-critical distributed platform, taking features from requirement analysis through implementation and testing to production support. Served as an escalation point on the 24/7 support rota, investigating and resolving live issues.</p>
               <ul class="contribution-list">
                 <li><strong>Owned features end to end:</strong> clarified a stitched-episode requirement with scheduling teams, designed the composite asset data model, wrote acceptance criteria and delivered the service and consuming UI.</li>
+                <li><strong>Turned business needs into delivery:</strong> translated requests from rights, scheduling and finance users into Jira stories with Gherkin acceptance criteria, prioritised them against dependencies and business impact, and descoped work to meet deadlines.</li>
                 <li><strong>Helped modernise the data platform:</strong> mapped flows, dependencies and migration risks while moving from a monolithic Oracle data layer towards services using Kafka Connect CDC, Spring Boot and CouchbaseDB.</li>
-                <li><strong>Led delivery platform migration:</strong> moved deployment pipelines for 30+ team-owned services and libraries to Sky's Kubernetes-based CloudGrid platform.</li>
-                <li><strong>Supported production safely:</strong> investigated faults using SQL, logs and Prometheus, coordinated incidents and changes, and used impact assessments, rollback plans and live verification.</li>
+                <li><strong>Led delivery platform migration:</strong> moved 30+ team-owned services and libraries from Jenkins to CloudGrid, another team's Kubernetes cluster, rebuilding the pipelines around Helm and Concourse. Descoped to production-ready pipelines to meet the deadline.</li>
+                <li><strong>Supported production safely:</strong> investigated and resolved faults using SQL, logs and Prometheus, managed incidents and changes through ServiceNow, and used impact assessments, rollback plans and live verification.</li>
                 <li><strong>Modernised services:</strong> upgraded Spring Boot 2 to 3 and Apache Camel 3 to 4, identifying breaking changes and namespace conflicts before production.</li>
-                <li><strong>Worked across teams and vendors:</strong> agreed API contracts, tested external integrations through to production, and kept technical documentation and API specifications current.</li>
+                <li><strong>Worked across teams and vendors:</strong> worked with distributed, international teams, including Sky's Italian team on a federated rights project; agreed API contracts, tested external integrations through to production, and kept technical documentation and API specifications current.</li>
+                <li><strong>Built reporting tools with users:</strong> worked with rights and finance users to define the data they needed, then built WinForms tools that generated complex SQL queries and formatted Excel outputs, and investigated discrepancies between reported and expected figures.</li>
+                <li><strong>Communicated progress:</strong> presented the team's progress against the Head of Engineering's metrics at quarterly department-wide meetings of 90+ people, and demonstrated delivered work to stakeholders at fortnightly sessions.</li>
                 <li><strong>Improved observability:</strong> designed a Prometheus metrics-labelling strategy to support more accurate monitoring and alerting.</li>
               </ul>           
               <div class="tags" aria-label="Technologies used">
@@ -370,10 +384,10 @@
             <div class="project-links"><a href="https://github.com/Ned-57/wordlescape.lol" target="_blank" rel="noopener noreferrer">Browse code on GitHub <span aria-hidden="true">↗</span></a></div>
           </article>
           <article class="project-card">
-            <p class="project-kicker">JavaScript · Game</p><h3 class="project-title">Wordlescape</h3>
-            <p class="project-desc">A daily Old School RuneScape word game with themed categories and hints. Built as a self-contained HTML file with no build step or dependencies.</p>
-            <div class="tags"><span class="tag">JavaScript</span><span class="tag">HTML / CSS</span></div>
-            <div class="project-links"><a href="https://wordlescape.lol/">Play Wordlescape <span aria-hidden="true">→</span></a></div>
+            <p class="project-kicker">Python · Tooling</p><h3 class="project-title">JobHunt</h3>
+            <p class="project-desc">A Python app that tailors CVs to job descriptions and tracks applications, built and used for my own job search.</p>
+            <div class="tags"><span class="tag">Python</span><span class="tag">Automation</span></div>
+            <div class="project-links"><a href="https://github.com/Ned-57/jobhunt" target="_blank" rel="noopener noreferrer">Browse code on GitHub <span aria-hidden="true">↗</span></a></div>
           </article>
         </div>
       </div>
@@ -381,14 +395,14 @@
 
     <section class="section" id="skills" aria-labelledby="skills-title">
       <div class="wrap">
-        <div class="section-heading"><h2 class="section-kicker" id="skills-title">Technical toolkit</h2><span class="section-rule" aria-hidden="true"></span></div>
+        <div class="section-heading"><h2 class="section-kicker" id="skills-title">Skills and toolkit</h2><span class="section-rule" aria-hidden="true"></span></div>
         <div class="skills-grid">
-          <article class="skill-card"><h3 class="skill-title">Languages and frameworks</h3><p class="skill-copy">C# and .NET · ASP.NET Core · Java 17 · Spring Boot · Apache Camel · Python · TypeScript and JavaScript</p></article>
+          <article class="skill-card"><h3 class="skill-title">Product and analysis</h3><p class="skill-copy">Requirements · user stories · Gherkin acceptance criteria · backlog refinement · prioritisation (Cost of Delay, CD3) · scope management · dependency and impact analysis · Scrum · Jira</p></article>
+          <article class="skill-card"><h3 class="skill-title">Languages and frameworks</h3><p class="skill-copy">C# and .NET · ASP.NET Core · Java 17 · Spring Boot · Apache Camel · Python · TypeScript and JavaScript · TDD · integration testing</p></article>
           <article class="skill-card"><h3 class="skill-title">Data and messaging</h3><p class="skill-copy">Apache Kafka · Kafka Connect CDC · CouchbaseDB · Oracle PL/SQL · MS SQL Server · data modelling and migration</p></article>
           <article class="skill-card"><h3 class="skill-title">Platform and delivery</h3><p class="skill-copy">Kubernetes · Helm · Docker · Jenkins · TeamCity · Octopus Deploy · Prometheus · Vault Secrets Operator</p></article>
           <article class="skill-card"><h3 class="skill-title">Applied AI</h3><p class="skill-copy">Anthropic SDK · MCP tools · LLM content pipelines · streamed serverless APIs · GitHub Copilot</p></article>
-          <article class="skill-card"><h3 class="skill-title">Analysis and quality</h3><p class="skill-copy">Requirements · acceptance criteria · dependency and impact analysis · change and rollback planning · TDD · integration testing · root-cause analysis</p></article>
-          <article class="skill-card"><h3 class="skill-title">Working in production</h3><p class="skill-copy">Incident investigation · SQL and logs · monitoring and alerting · vendor integrations · technical documentation · cross-team delivery</p></article>
+                    <article class="skill-card"><h3 class="skill-title">Working in production</h3><p class="skill-copy">Incident investigation · root-cause analysis · change and rollback planning · SQL and logs · monitoring and alerting · vendor integrations · technical documentation · cross-team delivery</p></article>
         </div>
       </div>
     </section>
